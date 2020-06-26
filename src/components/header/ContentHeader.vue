@@ -105,10 +105,9 @@
     overflow: hidden
     color: #fff
     background: rgba(7, 17, 27, 0.5)
-    height :100px
     .content-wrapper
       position: relative
-      padding: 3px 12px 18px 24px
+      padding: 24px 12px 18px 24px
       font-size: 0
       .avatar
         display: inline-block
@@ -188,7 +187,6 @@
       overflow: hidden
       text-overflow: ellipsis
       background: rgba(7, 17, 27, 0.2)
-      margin-top :-10px
       .bulletin-title
         display: inline-block
         vertical-align: top

@@ -94,7 +94,7 @@
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-
+      this.seller = Object.assign({}, this.seller, response.data);
       // this.$http.get('/api/goods').then((response) => {
       //   response = response.body;
       //   if (response.errno === ERR_OK) {
@@ -226,6 +226,7 @@
           font-size: 12px
     .foods-wrapper
       flex: 1
+      overflow-y :auto
       .title
         padding-left: 14px
         height: 26px

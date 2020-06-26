@@ -80,6 +80,7 @@
       };
     },
     created() {
+      this.seller = Object.assign({}, this.seller, response.data);
       // this.$http.get('/api/ratings').then((response) => {
       //   response = response.body;
       //   if (response.errno === ERR_OK) {
@@ -148,7 +149,7 @@
     bottom: 0
     left: 0
     width: 100%
-    overflow: hidden
+    overflow-y :auto
     .overview
       display: flex
       padding: 18px 0
@@ -211,6 +212,7 @@
             color: rgb(147, 153, 159)
     .rating-wrapper
       padding: 0 18px
+
       .rating-item
         display: flex
         padding: 18px 0

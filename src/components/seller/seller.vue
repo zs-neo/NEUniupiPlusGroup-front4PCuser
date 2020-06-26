@@ -73,7 +73,7 @@
   import {saveToLocal, loadFromLocal} from 'common/js/store';
   import star from 'components/star/star';
   import split from 'components/split/split';
-
+  const response = require('../../common/data/seller.json');
   export default {
     props: {
       seller: {
@@ -94,6 +94,7 @@
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+      this.seller = Object.assign({}, this.seller, response.data);
     },
     watch: {
       'seller'() {
@@ -161,7 +162,7 @@
     bottom: 0
     left: 0
     width: 100%
-    overflow: hidden
+    overflow-y :auto
     .overview
       position: relative
       padding: 18px
