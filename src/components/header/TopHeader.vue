@@ -73,7 +73,7 @@
             </DropdownMenu>
           </Dropdown>
         </li>
-        <li><router-link to="/">网站导航</router-link></li>
+        <li><router-link to="/myinfo">个人中心</router-link></li>
         <li><router-link to="/freeback">意见反馈</router-link></li>
         <li><router-link to="/">首页</router-link></li>
       </ul>
