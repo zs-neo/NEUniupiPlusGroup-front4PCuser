@@ -5,7 +5,7 @@
         <div class="nav-menu">
           <ul class="menu-wrap">
             <li class="menu-item">
-              <a href="javascript:;">手机 电话卡</a>
+              <a href="javascript:;">食品分类</a>
               <div class="children">
                 <ul v-for="(item,i) in menuList" :key="i">
                   <li v-for="(sub,j) in item" :key="j">
@@ -18,25 +18,25 @@
               </div>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">电视 盒子</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">笔记本 平板</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">家电 插线板</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">出行 穿戴</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">智能 路由器</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">电源 配件</a>
+              <a href="javascript:;">食品分类</a>
             </li>
             <li class="menu-item">
-              <a href="javascript:;">生活 箱包</a>
+              <a href="javascript:;">食品分类</a>
             </li>
           </ul>
         </div>
@@ -126,11 +126,11 @@ export default {
       swiperOption: {
         autoplay: true,
         loop: true,
-        effect: 'cube',
-        cubeEffect: {
-          shadowOffset: 100,
-          shadowScale: 0.6
-        },
+        // effect: 'cube',
+        // cubeEffect: {
+        //   shadowOffset: 100,
+        //   shadowScale: 0.6
+        // },
         pagination: {
           el: '.swiper-pagination',
           clickable: true

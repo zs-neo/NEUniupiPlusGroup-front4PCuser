@@ -35,7 +35,7 @@
 
             <div class="header-menu">
               <div class="item-menu">
-                <span>小米手机</span>
+                <span>热卖</span>
                 <div class="children">
                   <ul>
                     <li class="product" v-for="(item, index) in phoneList" :key="index">
@@ -51,10 +51,10 @@
                 </div>
               </div>
               <div class="item-menu">
-                <span>RedMi红米</span>
+                <span>店家推荐</span>
               </div>
               <div class="item-menu">
-                <span>电视</span>
+                <span>折扣优惠</span>
                 <div class="children">
                   <ul>
                     <li class="product">

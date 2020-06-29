@@ -2,10 +2,10 @@
   <div class="service">
     <div class="container">
       <ul>
-        <li><span class="icon-setting"></span>预约维修服务</li>
-        <li><span class="icon-7day"></span>7天无理由退货</li>
-        <li><span class="icon-15day"></span>15天免费换货</li>
-        <li><span class="icon-post"></span>满150元包邮</li>
+        <li><span class="icon-setting"></span>店家24小时在线</li>
+        <li><span class="icon-7day"></span>菜品不满意退货</li>
+        <li><span class="icon-15day"></span>菜品种类多多</li>
+        <li><span class="icon-post"></span>优惠多多</li>
       </ul>
     </div>
   </div>

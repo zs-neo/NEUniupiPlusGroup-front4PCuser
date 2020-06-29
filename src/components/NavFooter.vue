@@ -5,11 +5,11 @@
         <p>小米商城</p>
       </div>
       <div class="footer-link">
-        <a href="http://www.jerrybro.cn" target="_blank">JerryBro主页</a><span>|</span>
-        <a href="http://www.jerrybro.cn" target="_blank">杰瑞软屋</a><span></span>
+        <a href="http://www.jerrybro.cn" target="_blank">主页</a><span>|</span>
+        <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a><span></span>
       </div>
       <div class="copyright">
-        Copyright ©2020 <span class="domain">www.jerrybro.cn</span> All Rights Reserved.
+        Copyright ©2020 <span class="domain">NEU-M</span> All Rights Reserved.
       </div>
     </div>
 </template>

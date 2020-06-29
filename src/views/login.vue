@@ -1,8 +1,8 @@
 <template>
   <div class="login">
-    <div class="container">
+<!--    <div class="container">
       <a href="/#/index"><img src="/imgs/login-logo.png" alt=""></a>
-    </div>
+    </div> -->
     <div class="wrapper">
       <div class="container">
         <div class="login-form">
@@ -27,10 +27,10 @@
     </div>
     <div class="footer">
       <div class="footer-link">
-        <a href="http://www.jerrybro.cn" target="_blank">JerrBro主页</a><span>|</span>
-        <a href="http://www.jerrybro.cn" target="_blank">杰瑞软屋</a>
+        <a href="http://www.jerrybro.cn" target="_blank">登录页</a><span>|</span>
+        <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a>
       </div>
-      <p class="copyright">Copyright ©2020 www.jerrybro.cn All Rights Reserved.</p>
+      <p class="copyright">Copyright ©2020 NEU-M All Rights Reserved.</p>
     </div>
   </div>
 </template>
