@@ -272,6 +272,7 @@ export default {
                 display:block;
               }
             }
+
             .children{
               display:none;
               width:962px;
