@@ -20,7 +20,7 @@
           </div>
           <div class="tips">
             <div class="sms" @click="register">手机短信登录/注册</div>
-            <div class="reg">立即注册<span>|</span>忘记密码？</div>
+            <div class="reg" @click="registernow">立即注册<span>|</span>忘记密码？</div>
           </div>
         </div>
       </div>
@@ -30,7 +30,7 @@
         <a href="http://www.jerrybro.cn" target="_blank">登录页</a><span>|</span>
         <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a>
       </div>
-      <p class="copyright">Copyright ©2020 NEU-M All Rights Reserved.</p>
+      <p class="copyright">Copyright ©2020 NEU_M Rights Reserved.</p>
     </div>
   </div>
 </template>
@@ -84,7 +84,10 @@ export default {
       }).then(() => {
         this.$message.success('注册成功')
       })
-    }
+    },
+    registernow(){
+        this.$router.push('/signup')
+    },
   }
 }
 </script>

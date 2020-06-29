@@ -30,7 +30,7 @@ module.exports = {
   // publicPath: '/app', //url子目录，即访问项目为：http://localhost:8080/app#/index
   // outputDir: 'dist',  //cnpm run build打包到名叫dist的文件夹中
   // indexPath: 'index2.html', //打包的页面取名为index2.html
-  // lintOnSave: false, // 关闭ESLint的代码检查：
+  lintOnSave: false, // 关闭ESLint的代码检查：
   productionSourceMap: false, // 设为false：打包后部署在Sources中搜索不到main.js(即看不到源码)，更安全
   chainWebpack: (config) => { // 删除预加载，防止重复加载
     config.plugins.delete('prefetch')

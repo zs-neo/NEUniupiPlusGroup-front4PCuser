@@ -1,127 +1,26 @@
 <template>
-    <!--
-      将头部导航div分成两块：nav-topbar、nav-header。
-      nav-topbar里再包个container用于居中，container包括topbar-menu(左)、topbar-user(右)
-      nav-header里再包个container用于居中，container包括logo(左)、menu(中)、search(右)
-    -->
     <div class="header">
       <div class="nav-topbar">
         <div class="container">
           <div class="topbar-menu">
-            <!-- 点击链接，不让页面刷新 -->
-            <a href="javascript:;">小米商城</a>
-            <a href="javascript:;">MUI</a>
-            <a href="javascript:;">云服务</a>
-            <a href="javascript:;">协议规则</a>
+
           </div>
           <div class="topbar-user">
             <a href="javascript:;" v-if="username">{{username}}</a>
             <a href="javascript:;" v-if="!username" @click="login()">登录</a>
             <a href="javascript:;" v-if="username" @click="logout()">退出</a>
             <a href="/#/order/list" v-if="username">我的订单</a>
+             <a href="javascript:;"  @click="goToMyinfo()">个人中心</a>
+             <a href="javascript:;"  @click="goToFreeback()">意见反馈</a>
+              <a href="javascript:;"  @click="goToIndex()">首页</a>
             <a href="javascript:;" class="my-cart" @click="goToCart()">
               <span class="icon-cart"></span>购物车({{cartCount}})
             </a>
+
           </div>
         </div>
       </div>
 
-      <div class="nav-header">
-          <div class="container">
-            <div class="header-logo">
-              <!-- 相当于：localhost:8080/#/index -->
-              <a href="/#/index"></a>
-            </div>
-
-            <div class="header-menu">
-              <div class="item-menu">
-                <span>热卖</span>
-                <div class="children">
-                  <ul>
-                    <li class="product" v-for="(item, index) in phoneList" :key="index">
-                      <a :href="'/#/product/'+item.id">
-                        <div class="pro-img">
-                          <img v-lazy="item.mainImage" :alt="item.subtitle">
-                        </div>
-                        <div class="pro-name">{{item.name}}</div>
-                        <div class="pro-price">{{item.price | currency}}</div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="item-menu">
-                <span>店家推荐</span>
-              </div>
-              <div class="item-menu">
-                <span>折扣优惠</span>
-                <div class="children">
-                  <ul>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-1.jpg'">
-                        </div>
-                        <div class="pro-name">小米壁画电视 65英寸</div>
-                        <div class="pro-price">6999元</div>
-                      </a>
-                    </li>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-2.jpg'">
-                        </div>
-                        <div class="pro-name">小米全面屏电视E55A</div>
-                        <div class="pro-price">1999元</div>
-                      </a>
-                    </li>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-3.png'">
-                        </div>
-                        <div class="pro-name">小米电视4A 32英寸</div>
-                        <div class="pro-price">699元</div>
-                      </a>
-                    </li>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-4.jpg'">
-                        </div>
-                        <div class="pro-name">小米电视4A 55英寸</div>
-                        <div class="pro-price">1799元</div>
-                      </a>
-                    </li>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-5.jpg'">
-                        </div>
-                        <div class="pro-name">小米电视4A 65英寸</div>
-                        <div class="pro-price">2699元</div>
-                      </a>
-                    </li>
-                    <li class="product">
-                      <a href="" target="_blank">
-                        <div class="pro-img">
-                          <img v-lazy="'/imgs/nav-img/nav-3-6.png'">
-                        </div>
-                        <div class="pro-name">查看全部</div>
-                        <div class="pro-price">查看全部</div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="header-search">
-              <div class="wapper">
-                <input type="text" name="keyword"/>
-                <a href="javascript:;"></a>
-              </div>
-            </div>
           </div>
       </div>
     </div>
@@ -137,8 +36,7 @@ export default {
     }
   },
   computed: {
-    // 通过计算属性获取username属性 (这里不选择用data中定义变量直接获取store中的username数据)
-    // （可以避免App.vue中用axios请求用户数据时造成的延迟而未渲染，因为计算属性当数据产生变化会重新渲染）
+
     /* 注释部分等同 ...mapState(['username','cartCount']) ，这只是简写方式语法糖而已
     username () {
       return this.$store.state.username
@@ -166,6 +64,16 @@ export default {
     login () {
       this.$router.push('/login')
     },
+    goToMyinfo(){
+       this.$router.push('/myinfo')
+    },
+    goToFreeback(){
+       this.$router.push('/freeback')
+    },
+    goToIndex(){
+       this.$router.push('/')
+    },
+
     logout () {
       // 发送请求给后端时，后端会拿到session的id，进行清空
       this.axios.post('/user/logout').then(() => {
@@ -231,146 +139,6 @@ export default {
             // url默认从public中找
             @include bgImg(16px,12px,'/imgs/icon-cart-checked.png');
             margin-right: 4px;
-          }
-        }
-      }
-    }
-    .nav-header{
-      .container{
-        position: relative;
-        height: 112px;
-        // scss语法，@include 方法名() , 即调用xx.scss种定义的那个方法
-        @include flex();
-        .header-logo{
-          display: inline-block;
-          width: 55px;
-          height: 55px;
-          background-color: $colorA;
-          a{
-            display: inline-block;
-            width: 110px;
-            height: 55px;
-            // 等价 a:before，这里是scss的写法
-            &:before{
-              content: ' ';  // 一定要加用来占位，不加伪类就没了
-              @include bgImg(55px,55px,'/imgs/mi-logo.png',55px);
-              // 配合鼠标悬停:hover，对margin属性实现过渡动画0.2秒完成
-              transition: margin 0.2s;
-            }
-            &:after{
-              content: ' ';
-              @include bgImg(55px,55px,'/imgs/mi-home.png',55px);
-            }
-            // 将伪类:before设置鼠标悬停向左移动55px
-            &:hover:before{
-              margin-left: -55px;
-            }
-          }
-        }
-        .header-menu{
-          display: inline-block;
-          width: 643px;
-          padding-left: 209px;
-          .item-menu{
-            display: inline-block;
-            color: $colorB;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 112px;
-            margin-right: 20px;
-            span{
-              cursor: pointer;
-            }
-            &:hover{
-              color: $colorA;
-              // 鼠标悬停到菜单上，显示对应菜单的下拉框，高度从0->220,透明度从0->1
-              .children{
-                height: 220px;
-                opacity: 1;
-              }
-            }
-            .children{
-              //.nav-header下的.container设置了相对定位，以这个位置为基准
-              position: absolute;
-              top: 112px;
-              left: 0;
-              width: 1226px;
-              height: 0;
-              opacity: 0;
-              overflow: hidden;
-              border-top: 1px solid #E5E5E5;
-              box-shadow: 0px 7px 6px 0px rgba(0,0,0,0.11);
-              z-index: 10;
-              transition: all 0.5s;
-              background-color: #ffffff;
-              .product{
-                position: relative;
-                float: left;
-                width: 16.6%;
-                height: 220px;
-                font-size: 12px;
-                line-height: 12px;
-                text-align: center;
-                a{
-                  // a是行内标签，要设置成块级，这样a包括的内容会撑开a，易于检查
-                  display: inline-block;
-                }
-                img{
-                  width: auto;
-                  height: 111px;
-                  margin-top: 26px;
-                }
-                .pro-img{
-                  height: 137px;
-                }
-                .pro-name{
-                  font-weight: bold;
-                  margin-top: 19px;
-                  margin-bottom: 8px;
-                  color: $colorB;
-                }
-                .pro-price{
-                  color: $colorA;
-                }
-                &:before{
-                  // 当前.product设置了相对定位，.product的伪类以这个位置为基准
-                  content: '';
-                  position: absolute;
-                  top: 28px;
-                  right: 0;
-                  border-left: 1px solid $colorF;
-                  height: 100px;
-                  width: 1px;
-                }
-                // 最后一个<li class=product>的伪类:before去掉(不显示)
-                &:last-child:before{
-                  display: none;
-                }
-              }
-            }
-          }
-        }
-        .header-search{
-          width: 319px;
-          .wapper{
-            height: 50px;
-            border: 1px solid #E0E0E0;
-            display: flex;
-            align-items: center;
-            input{
-              // 去除浏览器内置的边框样式
-              border: none;
-              // 设置了box-sizing则整个input宽度总和是264px(包括了padding值)，否则padding而外算，叠加了！
-              box-sizing: border-box;
-              border-right: 1px solid #E0E0E0;
-              width: 264px;
-              height: 50px;
-              padding-left: 14px;
-            }
-            a{
-              @include bgImg(18px,18px,'/imgs/icon-search.png');
-              margin-left: 17px;
-            }
           }
         }
       }

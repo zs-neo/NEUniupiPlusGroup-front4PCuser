@@ -8,6 +8,9 @@ import { Message } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 import App from './App.vue'
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+Vue.use(iView);
 
 /**
  * - 根据环境变量获取不同的请求地址[方式一]: CORS和JSONP跨越时,使用env.js自己定义的环境文件

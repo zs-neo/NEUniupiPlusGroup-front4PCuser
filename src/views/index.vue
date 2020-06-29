@@ -32,12 +32,6 @@
             <li class="menu-item">
               <a href="javascript:;">食品分类</a>
             </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
           </ul>
         </div>
 
@@ -202,6 +196,15 @@ export default {
   },
   mounted () {
     this.init()
+	this.axios.get(`${server}${getAllByPage}`,{params:{
+				  				 pageNum: this.currentPage,
+				  				 pageSize:this.PageSize,
+				  	 		}}).then(r=>{
+				  				console.log(r.data.list);
+	   this.Events=r.data.list;
+	   this.totalCount=r.data.total;
+
+	 })
   },
   methods: {
     init () {

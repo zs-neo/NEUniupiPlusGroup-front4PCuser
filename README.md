@@ -2,12 +2,16 @@
 vue2 + vue-router + vuex + axios + sass （vue-cli4搭建的）
 # 启动
 ```
+npm install v-distpicker --save
+npm install iview
+
 # npm install （安装依赖）
 # npm run serve （本地运行）
 # npm run build （打包）
 账号：jerrybro
 密码：jerrybro
 ```
+
 # vue-cli项目注意点
 - vue-cli项目克隆到本地，需要cnpm install（即安装依赖包），再cnpm run serve（即启动项目）
 - cnpm install [插件名] --save(-S)      【保存到dependencies:{xxx}】
@@ -39,7 +43,7 @@ vue2 + vue-router + vuex + axios + sass （vue-cli4搭建的）
 
 - 获取动态路由后面的参数： （如获取参数32， http://localhost:8080/#/product/32）
 ```
-  const id = this.$route.params.myid    
+  const id = this.$route.params.myid
   【注：动态路由params参数是自己定义的名字，为myid】
   【注： this.$router.push('/login') 是路由跳转，注意区分】
 ```
@@ -48,7 +52,7 @@ vue2 + vue-router + vuex + axios + sass （vue-cli4搭建的）
 
 - 路由带参数跳转，有如下两种方式：
 ```
-【注：用params传参不显示在url地址上；而用query传参回显示在url地址上】  
+【注：用params传参不显示在url地址上；而用query传参回显示在url地址上】
 // 方法一：（效果等同法二，不过该方式参数'?键名=值名'不显示在url上）
   this.$router.push({
      name: 'index',
@@ -56,7 +60,7 @@ vue2 + vue-router + vuex + axios + sass （vue-cli4搭建的）
        键名: 值名
      }
    })
-   
+
    // 方法二：（参数‘值名’显示在url上，且跳转到页面/index也不消失）
    this.$router.push({
      path: '/index',
@@ -66,7 +70,7 @@ vue2 + vue-router + vuex + axios + sass （vue-cli4搭建的）
    })
 ```
 
-- [变量] ：加载变量 
+- [变量] ：加载变量
 ```
  components: {
    // [变量]表示加载变量， Pagination.name就是el-pagination
@@ -98,7 +102,7 @@ axios.get( 'url',{ 参数名：值 } ).then(function (response) {}).catch(functi
 ```
 - <img>标签的src可以存放.svg的矢量图
 ```
-<img src='/imgs/loading-bars.svg' alt='一个svg图片'/> 
+<img src='/imgs/loading-bars.svg' alt='一个svg图片'/>
 ```
 
 # 项目目录
@@ -116,9 +120,9 @@ axios.get( 'url',{ 参数名：值 } ).then(function (response) {}).catch(functi
   * src/storage： 这里放置缓存sessionStorage、cookie、localStorage等存取以及删除等公共方法，便于操作缓存（虽然已经缓存提供了一些API，但自己封装的能根据项目而定）
 
   * env.js： 该配置文件是自己抽取出来的,根据CORS和JSONP跨域才做此设置，接口代理跨越则不需要这个
-  	- .env.prev: 是自定义vue.config.js --mode=prev(名称为prev自定义的)，且env.js中也要对应prev  
- 
- 
+  	- .env.prev: 是自定义vue.config.js --mode=prev(名称为prev自定义的)，且env.js中也要对应prev
+
+
 # 项目简介
  * public文件夹： 是项目的根目录，即 '/imgs/logo.png'来引用public下的资源
 

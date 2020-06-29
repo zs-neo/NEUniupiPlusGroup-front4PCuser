@@ -3,8 +3,8 @@
     <div class="container">
       <ul>
         <li><span class="icon-setting"></span>店家24小时在线</li>
-        <li><span class="icon-7day"></span>菜品不满意退货</li>
-        <li><span class="icon-15day"></span>菜品种类多多</li>
+        <li><span class="icon-7day"></span>不满意无理由退货</li>
+        <li><span class="icon-15day"></span>菜品多多</li>
         <li><span class="icon-post"></span>优惠多多</li>
       </ul>
     </div>

@@ -1,14 +1,17 @@
 <template>
   <div id="app">
+      <NavHeader></NavHeader>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 // import storage from './storage'
+import NavHeader from './components/NavHeader.vue'
 export default {
   name: 'app',
   components: {
+     NavHeader,
 
   },
   data () {

@@ -1,5 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import freeback from '../views/Freeback.vue';
+import signup from '../views/SignUp.vue';
+import MyInfo from '../views/Myinfo.vue';
+import CheckPhone from '../components/signUp/CheckPhone.vue';
+import InputInfo from '../components/signUp/InputInfo.vue';
+import SignUpDone from '../components/signUp/SignUpDone.vue';
+import AddAddress from '../components/myinfo/AddAddress.vue';
+import MyAddress from '../components/myinfo/MyAddress.vue';
+import MyOrder from '../components/myinfo/MyOrder.vue';
 
 // Vue加载插件的语法
 Vue.use(VueRouter)
@@ -72,6 +81,64 @@ export default new VueRouter({
           component: () => import('./../views/alipay.vue')
         }
       ]
-    }
+    },
+	{
+	  path: '/freeback',
+	  component: freeback
+	},
+	{
+	      path: '/myinfo', // 个人中心
+	      name: 'MyInfo',
+	      component: MyInfo,
+	      children: [
+	        {
+	          path: '/',
+	          name: 'HomeIndex',
+	          component: MyOrder
+	        },
+	        {
+	          path: 'myAddress',
+	          name: 'MyAddress',
+	          component: MyAddress
+	        },
+	        {
+	          path: 'addAddress',
+	          name: 'AddAddress',
+	          component: AddAddress
+	        },
+	        {
+	          path: 'myOrder',
+	          name: 'MyOrder',
+	          component: MyOrder
+	        },
+
+	      ]
+	    },{
+	  path: '/signup',
+	  component: signup,
+	  children: [
+	    {
+	      path: '/',
+	      name: 'index',
+	      component: CheckPhone
+	    },
+	    {
+	      path: 'checkPhone',
+	      name: 'CheckPhone',
+	      component: CheckPhone
+	    },
+	    {
+	      path: 'inputInfo',
+	      name: 'InputInfo',
+	      component: InputInfo
+	    },
+	    {
+	      path: 'signUpDone',
+	      name: 'SignUpDone',
+	      component: SignUpDone
+	    }
+	  ]
+
+	},
   ]
 })
