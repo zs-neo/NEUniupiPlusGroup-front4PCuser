@@ -43,6 +43,7 @@ axios.defaults.timeout = 8000
 // 第二个参数，是请求响应除200(如4xx/5xx)以外失败后的拦截
 axios.interceptors.response.use(function (response) {
   const res = response.data
+  console.log(res)
   if (res.status === 0) { // 0：表示成功
     return res.data
   } else if (res.status === 10) { // 10：表示未登录

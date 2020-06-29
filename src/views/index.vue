@@ -1,6 +1,14 @@
 <template>
   <div class="index">
     <div class="container">
+      
+		<div class="search bar">
+		    <form>
+		        <input placeholder="css搜索框代码测试" name="cname" type="text">
+		        <button type="submit"></button>
+		    </form>
+		</div>
+
       <div class="swiper-box">
         <div class="nav-menu">
           <ul class="menu-wrap">
@@ -190,7 +198,8 @@ export default {
           img: '/imgs/ads/ads-4.jpg'
         }
       ],
-      phoneList: [],
+      phoneList: [
+      ],
       showModal: false
     }
   },
@@ -207,6 +216,15 @@ export default {
 	 })
   },
   methods: {
+    dos(){
+      this.axios.get('/user/hi', {
+        params: {
+        }
+      }).then((res) => {
+        console.log(res)
+        }
+        )
+    },
     init () {
       // 查询14条数据，phoneList只用后面8条数据
       this.axios.get('/products', {
@@ -415,5 +433,56 @@ export default {
         }
       }
     }
+  }
+
+
+  div.search {
+      padding:10px 0;
+      form {
+          position:relative;
+          width:500px;
+          margin:0 auto;
+      }
+  }
+
+
+  input,button {
+      border:none;
+      outline:none;
+  }
+
+  input {
+      width:100%;
+      height:42px;
+      padding-left:13px;
+  }
+
+  button {
+      height:42px;
+      width:42px;
+      cursor:pointer;
+      position:absolute;
+  }
+
+  .bar input {
+      border:2px solid #FF6600;
+      // border-radius:5px;
+      background:transparent;
+      top:0;
+      right:0;
+  }
+
+  .bar button {
+      background:#FF6600;
+      // border-radius:0 5px 5px 0;
+      width:60px;
+      top:0;
+      right:0;
+  }
+
+  .bar button:before {
+      content:"搜索";
+      font-size:15px;
+      color:white;
   }
 </style>
