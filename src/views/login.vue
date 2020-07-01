@@ -7,7 +7,7 @@
       <div class="container">
         <div class="login-form">
           <h3>
-            <span class="checked">帐号登录</span><span class="sep-line">|</span><span>扫码登录</span>
+            <span class="checked">帐号登录</span><span class="sep-line">|</span><span @click="scanCode">扫码登录</span>
           </h3>
           <div class="input">
             <input type="text" placeholder="请输入帐号" v-model="username">
@@ -24,13 +24,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="footer">
-      <div class="footer-link">
-        <a href="http://www.jerrybro.cn" target="_blank">登录页</a><span>|</span>
-        <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a>
-      </div>
-      <p class="copyright">Copyright ©2020 NEU_M Rights Reserved.</p>
     </div>
   </div>
 </template>
@@ -88,6 +81,10 @@ export default {
     registernow(){
         this.$router.push('/signup')
     },
+    scanCode(){
+       // this.$router.push('/scanCode')
+    }
+
   }
 }
 </script>

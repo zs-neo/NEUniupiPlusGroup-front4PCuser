@@ -12,16 +12,7 @@ export default {
   name: 'MyOrder',
   data () {
     return {
-      order: [{
-        order_id: 1529931938150,
-        goods_id: 1529931938150,
-        count: 1,
-        img: 'static/img/goodsDetail/pack/1.jpg',
-        package: '4.7英寸-深邃蓝',
-        price: 28,
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        createAt: '2018-06-06 20:06:08'
-      }],
+      order: [],
       columns: [
         {
           title: '订单号',

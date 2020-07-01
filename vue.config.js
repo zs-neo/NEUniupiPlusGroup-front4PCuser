@@ -12,7 +12,7 @@ module.exports = {
   },
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 8099,
     // 接口代理,即路径是自己写的路径,但会根据自己设置代理到别的网站url上
     proxy: {
       // url中带/api的，如xxx:8080/api/xx，会被拦截转到访问target这个路径下

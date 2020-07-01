@@ -5,8 +5,8 @@
         <p>秘制小厨房</p>
       </div>
       <div class="footer-link">
-        <a href="http://www.jerrybro.cn" target="_blank">主页</a><span>|</span>
-        <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a><span></span>
+        <a target="_blank">Secret Kitchen</a><span>|</span>
+        <a target="_blank">中软实训M组</a><span></span>
       </div>
       <div class="copyright">
         Copyright ©2020 <span class="domain">NEU_M</span> All Rights Reserved.

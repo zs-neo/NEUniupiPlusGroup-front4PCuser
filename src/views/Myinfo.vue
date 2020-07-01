@@ -73,7 +73,6 @@
             <router-view></router-view>
           </transition>
         </Content>
-        <Footer class="layout-footer-center">2018 &copy; Gavin</Footer>
       </Layout>
     </Layout>
 

@@ -9,14 +9,12 @@ import SignUpDone from '../components/signUp/SignUpDone.vue';
 import AddAddress from '../components/myinfo/AddAddress.vue';
 import MyAddress from '../components/myinfo/MyAddress.vue';
 import MyOrder from '../components/myinfo/MyOrder.vue';
-
-// Vue加载插件的语法
+import ClientCenter from '../components/clientCenter/ClientCenter.vue'
+import MyOrders from '../components/clientCenter/MyOrders.vue'
+import OrderDetails from '../components/clientCenter/OrderDetails.vue'
 Vue.use(VueRouter)
 
-// 再导出VueRouter实例，这里格式是：VueRouter实例的参数是一个对象
-export default new VueRouter({
-  // routes(路由):即url输入对应的路径,加载显示对应的组件
-  routes: [
+  const routes = [
     {
       path: '/',
       name: 'home', // 若这里取了name,则对应导入的component组件中也要定义相同的name: 'home'
@@ -54,6 +52,11 @@ export default new VueRouter({
       path: '/cart',
       name: 'cart',
       component: () => import('./../views/cart.vue')
+    },
+    {
+      path: '/scanCode',
+      name: 'ScanCode',
+      component: () => import('./../components/ScanPayCode.vue')
     },
     {
       path: '/order',
@@ -140,5 +143,36 @@ export default new VueRouter({
 	  ]
 
 	},
+  {
+    path: '/clientCenter',
+    name: 'ClientCenter',
+    component: ClientCenter,
+    children:[
+      {
+        path: '/clientCenter/myOrders',
+        name: 'MyOrders',
+        component: MyOrders
+      }
+    ]
+  },
+  {
+    path: '/orderDetails',
+    name: 'OrderDetails',
+    component: OrderDetails,
+  }
   ]
+
+const router = new VueRouter({
+  linkActiveClass: 'active',
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
+
+export default router
+
+
+router.beforeEach((to,from,next)=>{
+	document.title = "秘制小厨";
+	next();
 })

@@ -40,6 +40,24 @@
             <li class="menu-item">
               <a href="javascript:;">食品分类</a>
             </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:;">食品分类</a>
+            </li>
           </ul>
         </div>
 
@@ -267,6 +285,8 @@ export default {
         background-color:#55585a7a;
         box-sizing:border-box;
         .menu-wrap{
+          overflow: auto;
+          height: inherit;
           .menu-item{
             height:50px;
             line-height:50px;
@@ -324,6 +344,9 @@ export default {
             }
           }
         }
+        .menu-wrap::-webkit-scrollbar {
+        display: none;
+    }
       }
       .swiper-container {
         height: 451px;

@@ -9,10 +9,10 @@
             <a href="javascript:;" v-if="username">{{username}}</a>
             <a href="javascript:;" v-if="!username" @click="login()">登录</a>
             <a href="javascript:;" v-if="username" @click="logout()">退出</a>
-            <a href="/#/order/list" v-if="username">我的订单</a>
-             <a href="javascript:;"  @click="goToMyinfo()">个人中心</a>
-             <a href="javascript:;"  @click="goToFreeback()">意见反馈</a>
-              <a href="javascript:;"  @click="goToIndex()">首页</a>
+            <a href="/clientCenter/myOrders" >我的订单</a>
+            <a href="/clientCenter">个人中心</a>
+            <a href="javascript:;"  @click="goToFreeback()">意见反馈</a>
+            <a href="javascript:;"  @click="goToIndex()">首页</a>
             <a href="javascript:;" class="my-cart" @click="goToCart()">
               <span class="icon-cart"></span>购物车({{cartCount}})
             </a>
@@ -21,9 +21,7 @@
         </div>
       </div>
 
-          </div>
-      </div>
-    </div>
+     </div>
 </template>
 
 <script>
@@ -121,6 +119,7 @@ export default {
       background-color: $colorB;
       color: #B0B0B0;
       .container {
+        height: inherit;
         // flex弹性布局，水平、垂直居中
         @include flex();
         a{
@@ -131,9 +130,10 @@ export default {
         }
         .my-cart{
           width:110px;
-          background-color:$colorA;
+          background-color: red;
           text-align:center;
           color:#ffffff;
+          height: 39px;
           margin-right:0;
           .icon-cart{
             // url默认从public中找
