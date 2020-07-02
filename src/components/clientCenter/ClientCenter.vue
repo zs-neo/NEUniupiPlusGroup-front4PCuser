@@ -35,7 +35,10 @@
               设置
             </dt>
             <dd>
-              <router-link to="/clientCenter/info/" active-class="a-active" exact><span>个人中心</span></router-link>
+              <router-link to="/clientCenter/myCenter" active-class="a-active" exact><span>个人中心</span></router-link>
+            </dd>
+            <dd>
+              <router-link to="/clientCenter/info/" active-class="a-active" exact><span>个人信息</span></router-link>
             </dd>
             <dd>
              <router-link to="/clientCenter/myAddress"  active-class="a-active" exact><span>配送地址</span></router-link>
