@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="container">
-      
+
 		<div class="search bar">
 		    <form>
 		        <input placeholder="css搜索框代码测试" name="cname" type="text">
@@ -173,10 +173,7 @@ export default {
           id: '46',
           img: '/imgs/slider/slide-3.jpg'
         },
-        {
-          id: '49',
-          img: '/imgs/slider/slide-4.jpg'
-        }
+      
       ],
       menuList: [
         // 6行4列的二维数组
@@ -273,6 +270,12 @@ export default {
 <style lang="scss">
   @import './../assets/scss/config.scss';
   @import './../assets/scss/mixin.scss';
+  .swiper-box img{
+
+  }
+  .container{
+    width: 100%;
+  }
   .index{
     .swiper-box{
       .nav-menu{
@@ -349,6 +352,7 @@ export default {
     }
       }
       .swiper-container {
+        margin: 0 10px;
         height: 451px;
         .swiper-button-prev{
           left:274px;
@@ -508,5 +512,8 @@ export default {
       content:"搜索";
       font-size:15px;
       color:white;
+  }
+  .swiper-box{
+    width: 100%;
   }
 </style>
