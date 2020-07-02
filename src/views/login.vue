@@ -7,7 +7,7 @@
       <div class="container">
         <div class="login-form">
           <h3>
-            <span class="checked">帐号登录</span><span class="sep-line">|</span><span @click="scanCode">扫码登录</span>
+            <span class="checked">帐号登录</span><span class="sep-line">|</span><span>扫码登录</span>
           </h3>
           <div class="input">
             <input type="text" placeholder="请输入帐号" v-model="username">
@@ -25,6 +25,13 @@
         </div>
       </div>
     </div>
+    <div class="footer">
+      <div class="footer-link">
+        <a href="http://www.jerrybro.cn" target="_blank">登录页</a><span>|</span>
+        <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a>
+      </div>
+      <p class="copyright">Copyright ©2020 NEU_M Rights Reserved.</p>
+    </div>
   </div>
 </template>
 <script>
@@ -41,33 +48,25 @@ export default {
   methods: {
     ...mapActions(['saveUserName', 'saveCartCount']),
     login () {
-      const { username, password } = this
-      this.axios.post('/user/login', {
-        username,
-        password
-      }).then((res) => {
-        // cookie会随请求传给服务器，服务器接收cookie用来判断是否已经登录(修改了status，防止被未登录拦截)
-        this.$cookie.set('userId', res.id, { expires: 'Session' })
-        // this.$store.dispatch('saveUserName',res.username) 这句等同下面3条语句
-        // 1.import { mapActions } from 'vuex' 【导入vuex的actions，用于actions方法很多的情况，这里就尝试下新形式】
-        // 2. ...mapActions(['saveUserName']) 【参数是个数组用于字符串存放方法名，即结构actions中的saveUserName()方法，这里就直接可以使用该方法】
-        // 3. this.saveUserName(res.username) 【正常使用该方法，传递参数】
-        this.saveUserName(res.username)
-        /**
-          * 保存购物车数量，不在这里做（axios里套axios），改成跳转到/index页面里判断是否是login页面跳转过来的，是则请求购物车数量
-          * this.axios.get('/carts/products/sum').then((res) => {
-          * this.saveCartCount(res)
-          * })
-         */
-        this.$router.push({
-          // path:'/index'对应路由起的name:index
-          // 【注：用params传参必须使用name跳转路由；而用query传参必须使用path跳转路由】
-          name: 'index',
-          params: {
-            from: 'login'
-          }
-        })
-      })
+      this.axios.get(`http://localhost:8082/user/login`, {params:{
+      	'username':this.username,
+      	'password':this.password,
+      }}).then(rs=>{
+      	console.log(rs.data)
+      	if(rs.data!=""){
+      		sessionStorage.setItem("user",JSON.stringify(rs.data));
+      		this.$router.push({
+      		  // path:'/index'对应路由起的name:index
+      		  // 【注：用params传参必须使用name跳转路由；而用query传参必须使用path跳转路由】
+      		  name: 'index',
+      		  params: {
+      		    from: 'login'
+      		  }
+      		})
+      	}else{
+      		 this.$message.error("密码错误！")  ;
+      	}
+      });
     },
     register () {
       this.axios.post('/user/register', {
@@ -81,10 +80,6 @@ export default {
     registernow(){
         this.$router.push('/signup')
     },
-    scanCode(){
-       // this.$router.push('/scanCode')
-    }
-
   }
 }
 </script>

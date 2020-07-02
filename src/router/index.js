@@ -14,6 +14,12 @@ import MyOrders from '../components/clientCenter/MyOrders.vue'
 import OrderDetails from '../components/clientCenter/OrderDetails.vue'
 import ClientInfo from '../components/clientCenter/ClientInfo.vue'
 import MyCenter from '../components/clientCenter/MyCenter.vue'
+import MyCoupon from '../components/coupon/MyCoupon.vue';
+import CouponCenter from '../components/coupon/CouponCenter.vue';
+import ScoreCenter from '../components/coupon/ScoreCenter.vue';
+
+
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -91,34 +97,7 @@ Vue.use(VueRouter)
 	  path: '/freeback',
 	  component: freeback
 	},
-	{
-	      path: '/myinfo', // 个人中心
-	      name: 'MyInfo',
-	      component: MyInfo,
-	      children: [
-	        {
-	          path: '/',
-	          name: 'HomeIndex',
-	          component: MyOrder
-	        },
-	        {
-	          path: 'myAddress',
-	          name: 'MyAddress',
-	          component: MyAddress
-	        },
-	        {
-	          path: 'addAddress',
-	          name: 'AddAddress',
-	          component: AddAddress
-	        },
-	        {
-	          path: 'myOrder',
-	          name: 'MyOrder',
-	          component: MyOrder
-	        },
-
-	      ]
-	    },{
+,{
 	  path: '/signup',
 	  component: signup,
 	  children: [
@@ -164,14 +143,45 @@ Vue.use(VueRouter)
         name: 'MyCenter',
         component: MyCenter
       },
+     {
+            path: '/clientCenter/myAddress',
+            name: 'MyAddress',
+            component: MyAddress
+          },
+          {
+            path: '/clientCenter/addAddress',
+            name: 'AddAddress',
+            component: AddAddress
+          },
+          {
+            path: '/clientCenter/myCoupon',
+            name: 'MyCoupon',
+            component: MyCoupon
+          },
+    
+      
+      
     ],
     redirect: '/clientCenter/myCenter'
   },
+   {
+      path: '/couponCenter',
+      name: 'CouponCenter',
+      component: CouponCenter
+    },
+    {
+      path: '/scoreCenter',
+      name: 'ScoreCenter',
+      component: ScoreCenter
+    },
+  
+  
   {
     path: '/orderDetails',
     name: 'OrderDetails',
     component: OrderDetails,
   }
+  
   ]
 
 const router = new VueRouter({
