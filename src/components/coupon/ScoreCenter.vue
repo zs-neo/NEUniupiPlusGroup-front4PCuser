@@ -68,8 +68,6 @@
     </div>
 
 
-
-
   </div>
 </template>
 <script>
@@ -87,7 +85,6 @@ export default {
       redPackets:[],
       user:"",
       member:"",
-
     }
   },
   created () {
@@ -118,16 +115,17 @@ export default {
          if(needscore>nowscore){
            this.$message.error("对不起，您的积分不足，无法兑换");
          }else{
-           this.$Modal.confirm({
-                               title: '兑换红包',
-                               content: '您确定消耗一定积分兑换该红包吗？',
-                               onOk: () => {
-                                   this.$Message.info('点击了确定');
-                               },
-                               onCancel: () => {
-                                   this.$Message.info('点击了取消');
-                               }
-                           });
+
+
+
+           if(confirm("您确定消耗一定积分兑换该红包么？")){
+             
+             
+
+
+             this.$message.success("兑换成功，请到我的优惠卷中查看！");
+           }
+
 
          }
 
