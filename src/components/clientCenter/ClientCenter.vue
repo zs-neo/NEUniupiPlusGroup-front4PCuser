@@ -19,7 +19,7 @@
               设置
             </dt>
             <dd>
-              <router-link to="/clientCenter/" active-class="a-active" exact><span>个人信息</span></router-link>
+              <router-link to="/clientCenter/info/" active-class="a-active" exact><span>个人中心</span></router-link>
             </dd>
             <dd>
               <a>收货地址</a>

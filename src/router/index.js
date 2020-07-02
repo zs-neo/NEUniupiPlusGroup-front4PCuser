@@ -12,6 +12,8 @@ import MyOrder from '../components/myinfo/MyOrder.vue';
 import ClientCenter from '../components/clientCenter/ClientCenter.vue'
 import MyOrders from '../components/clientCenter/MyOrders.vue'
 import OrderDetails from '../components/clientCenter/OrderDetails.vue'
+import ClientInfo from '../components/clientCenter/ClientInfo.vue'
+import MyCenter from '../components/clientCenter/MyCenter.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -152,8 +154,18 @@ Vue.use(VueRouter)
         path: '/clientCenter/myOrders',
         name: 'MyOrders',
         component: MyOrders
-      }
-    ]
+      },
+      {
+        path: '/clientCenter/info',
+        name: 'ClientInfo',
+        component: ClientInfo
+      },{
+        path: '/clientCenter/myCenter',
+        name: 'MyCenter',
+        component: MyCenter
+      },
+    ],
+    redirect: '/clientCenter/myCenter'
   },
   {
     path: '/orderDetails',

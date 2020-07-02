@@ -44,11 +44,8 @@ axios.defaults.baseURL = '/api'
 // 第一个参数，是请求响应200成功后的拦截（根据请求内容的状态字段判断拦截），
 // 第二个参数，是请求响应除200(如4xx/5xx)以外失败后的拦截
 axios.interceptors.response.use(function (response) {
-
   return response;
 }, (error) => {
-
-  const res = error.response;
   return Promise.reject(error);
 })
 

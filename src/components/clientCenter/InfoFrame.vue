@@ -1,0 +1,88 @@
+<template>
+  <div class="infoFrame">
+    <div class="iconArea">
+      <div class="imgBorder">
+        <img src="../../../public/imgs/icon/headerIcon.png"/>
+
+      </div>
+      <div class="tab"><span class="rank" style="background-color: gold">青铜</span></div>
+    </div>
+    <div class="mainInfoArea">
+      <div><span class="title">用户名</span><span class="col">Jack Ma</span></div>
+      <div><span class="title">小厨点</span><span class="col">200</span></div>
+      <div><span class="title">会员类型</span><span class="col">普通用户</span></div>
+      <div><span class="title">认证时间</span><span class="col">2020-06-30</span></div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+</script>
+
+<style scoped>
+  .infoFrame{
+    width: 95%;
+    height: 95%;
+    display: block;
+    box-sizing: border-box;
+  }
+  .iconArea img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  .iconArea{
+    display: inline-block;
+    height: 105px;
+
+  }
+  .mainInfoArea{
+     font-family: '\5b8b\4f53';
+     font-size: 13px;
+     font-weight: 500;
+     color: #666666;
+    display: inline-block;
+    background-color: #999999;
+    width: 60%;
+    height: 100%;
+    padding: 10px;
+  }
+  .mainInfoArea >div{
+    padding-bottom: 10px;
+  }
+  .title{
+    padding-right: 10px;
+  }
+  .col{
+    font-weight: 700;
+  }
+  .rank {
+    position: absolute;
+    left: 35px;
+    top: -10px;
+    padding-left: 1px;
+    width: 40px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    -webkit-box-shadow: 2px 4px 4px 0 rgba(41,41,41,.5);
+    box-shadow: 2px 4px 4px 0 rgba(41,41,41,.5);
+    color: #343434;
+  }
+  .tab{
+    position: relative;
+  }
+  .imgBorder{
+    width: 108px;
+    height: 108px;
+    padding: 3px;
+    border-radius: 50%;
+    border: solid 1px #F08080;
+    background-color: #FFFFFF;
+    text-align: center;
+    line-height: 100px;
+  }
+</style>
