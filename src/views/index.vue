@@ -10,56 +10,6 @@
 		</div>
 
       <div class="swiper-box">
-        <div class="nav-menu">
-          <ul class="menu-wrap">
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-              <div class="children">
-                <ul v-for="(item,i) in menuList" :key="i">
-                  <li v-for="(sub,j) in item" :key="j">
-                    <a :href="sub?'/#/product/'+sub.id:''">
-                      <img :src="sub?sub.img:'/imgs/item-box-1.png'">
-                      {{sub?sub.name:'小米9'}}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:;">食品分类</a>
-            </li>
-          </ul>
-        </div>
 
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item,index) in slideList" :key="index">
@@ -72,13 +22,18 @@
         </swiper>
       </div>
 
+      <FoodDisplay></FoodDisplay>
+
+
+
+
       <div class="ads-box">
         <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
           <img v-lazy="item.img">
         </a>
       </div>
 
-<!--      <div class="banner">
+<!--     <div class="banner">
         <a href="/#/product/30">
           <img v-lazy="'/imgs/banner-1.png'">
         </a>
@@ -126,26 +81,42 @@
         <p>商品添加成功！</p>
       </template>
     </Modal>
+
+    <div class="children" v-if="display" @mouseover="remain" @mouseleave="leave">
+     <ul v-for="(item,i) in foodData" :key="i">
+         <li v-for="(sub,j) in item" :key="j">
+           <a @click="intoFood(sub.id)">
+             <img :src="`${imgPath}${sub.img}`">
+               {{sub.name}}
+           </a>
+         </li>
+       </ul>
+     </div>
   </div>
+
 </template>
 <script>
 import ServiceBar from './../components/ServiceBar'
 import Modal from './../components/Modal'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import FoodDisplay from '../components/FoodDisplay.vue'
 export default {
   name: 'index',
   components: {
     swiper,
     swiperSlide,
     ServiceBar,
-    Modal
+    Modal,
+    FoodDisplay
   },
   data () {
     return {
+      display:false,
       swiperOption: {
         autoplay: true,
         loop: true,
+        theme:'light',
         // effect: 'cube',
         // cubeEffect: {
         //   shadowOffset: 100,
@@ -166,14 +137,12 @@ export default {
           img: '/imgs/slider/slide-1.jpg'
         },
         {
-          id: '45',
+          id:'43',
           img: '/imgs/slider/slide-2.jpg'
         },
         {
-          id: '46',
+          id:'43',
           img: '/imgs/slider/slide-3.jpg'
-        },
-      
       ],
       menuList: [
         // 6行4列的二维数组
@@ -218,18 +187,20 @@ export default {
       showModal: false
     }
   },
-  mounted () {
-    this.init()
-	this.axios.get(`${server}${getAllByPage}`,{params:{
-				  				 pageNum: this.currentPage,
-				  				 pageSize:this.PageSize,
-				  	 		}}).then(r=>{
-				  				console.log(r.data.list);
-	   this.Events=r.data.list;
-	   this.totalCount=r.data.total;
 
-	 })
-  },
+ //  mounted () {
+ //    this.init()
+	// this.axios.get(`${server}${getAllByPage}`,{params:{
+	// 			  				 pageNum: this.currentPage,
+	// 			  				 pageSize:this.PageSize,
+	// 			  	 		}}).then(r=>{
+	// 			  				console.log(r.data.list);
+	//    this.Events=r.data.list;
+	//    this.totalCount=r.data.total;
+
+	//  })
+ //  },
+
   methods: {
     dos(){
       this.axios.get('/user/hi', {
@@ -263,31 +234,44 @@ export default {
     },
     goToCart () {
       this.$router.push('/cart')
+    },
+    leave(){
+      this.display=false;
+    },
+    remain(){
+      this.display=true;
+    },
+    intoFood(fid){
+      this.$router.push({path: "/detail", query: {fid: fid}})
+      console.log(fid);
     }
   }
 }
 </script>
 <style lang="scss">
+  .nav-menu::-webkit-scrollbar{
+    display: none;
+  }
   @import './../assets/scss/config.scss';
   @import './../assets/scss/mixin.scss';
-  .swiper-box img{
-
-  }
-  .container{
-    width: 100%;
-  }
   .index{
     .swiper-box{
       .nav-menu{
+        overflow: auto;
         position:absolute;
-        width:264px;
+        width:962px;
         height:451px;
         z-index:5;
         padding:26px 0;
         // 带透明度的背景色
         background-color:#55585a7a;
         box-sizing:border-box;
-        .menu-wrap{
+        .menu {
+          background-color:#55585a7a;
+          box-sizing:border-box;
+
+        }
+        .menu-wrap {
           overflow: auto;
           height: inherit;
           .menu-item{
@@ -314,48 +298,14 @@ export default {
               }
             }
 
-            .children{
-              display:none;
-              width:962px;
-              height:451px;
-              background-color:$colorG;
-              position:absolute;
-              top:0;
-              left:264px;
-              border:1px solid $colorH;
-              ul{
-                display:flex;
-                justify-content:space-between;
-                height:75px;
-                li{
-                  height:75px;
-                  line-height:75px;
-                  flex:1;
-                  padding-left:23px;
-                  a{
-                    color:$colorB;
-                    font-size:14px;
-                    img{
-                      width:42px;
-                      height:35px;
-                      vertical-align:middle;
-                      margin-right:15px;
-                    }
-                  }
-                }
-              }
-            }
           }
         }
-        .menu-wrap::-webkit-scrollbar {
-        display: none;
-    }
       }
       .swiper-container {
         margin: 0 10px;
         height: 451px;
         .swiper-button-prev{
-          left:274px;
+          left:5px;
         }
         img{
           width:100%;

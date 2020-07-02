@@ -10,7 +10,7 @@
       <div class="container">
         <div class="cart-box">
           <ul class="cart-item-head">
-            <li class="col-1"><span class="checkbox" :class="{'checked':allChecked}" @click="toggleAll"></span>全选</li>
+            <li class="col-1"><input type="checkbox" :checked="checkList.length==list.length" style="width: 15px;height: 15px;"  @click="checkAll">全选</li>
             <li class="col-3">商品名称</li>
             <li class="col-1">单价</li>
             <li class="col-2">数量</li>
@@ -20,21 +20,22 @@
           <ul class="cart-item-list">
             <li class="cart-item" v-for="(item,index) in list" :key="index">
               <div class="item-check">
-                <span class="checkbox" :class="{'checked':item.productSelected}"  @click="updateCart(item)"></span>
+                <input type="checkbox" :checked="checkList.indexOf(item.fid)>=0" ref="selection" style="width: 15px;height: 15px;"  @click="checkOne(item.fid)"/>
               </div>
               <div class="item-name">
-                <img v-lazy="item.productMainImage">
-                <span>{{item.productName + ' , ' + item.productSubtitle}}</span>
+                <img v-lazy="`${imgPath}${item.fpic}`">
+                <span>{{item.fname}}</span>
               </div>
-              <div class="item-price">{{item.productPrice}}</div>
+              <div class="item-price">￥{{item.fprice*item.fdiscount}}</div>
+              <div class="item-price"><del>￥{{item.fprice}}</del></div>
               <div class="item-num">
-                <div class="num-box">
-                  <a href="javascript:;" @click="updateCart(item,'-')">-</a>
-                  <span>{{item.quantity}}</span>
-                  <a href="javascript:;"  @click="updateCart(item,'+')">+</a>
-                </div>
+
+
+                  <Input type="number" style="width: 70px;" @on-change="change(item.fnum,item.fid)" v-model="item.fnum"></Input>
+
+
               </div>
-              <div class="item-total">{{item.productTotalPrice}}</div>
+              <div class="item-total">{{item.fnum*item.fprice*item.fdiscount}}</div>
               <div class="item-del" @click="delProduct(item)"></div>
             </li>
           </ul>
@@ -42,7 +43,7 @@
         <div class="order-wrap clearfix">
           <div class="cart-tip fl">
             <a href="/#/index">继续购物</a>
-            共<span>{{list.length}}</span>件商品，已选择<span>{{checkedNum}}</span>件
+            共<span>{{list.length}}</span>件商品，已选择<span>{{checkList.length}}</span>件
           </div>
           <div class="total fr">
             合计：<span>{{cartTotalPrice}}</span>元
@@ -70,16 +71,66 @@ export default {
   },
   data () {
     return {
+      imgPath:"http://localhost:8082/res/",
       list: [], // 商品列表
       allChecked: false, // 是否全选
       cartTotalPrice: 0, // 商品总金额
-      checkedNum: 0// 选中商品数量
+      checkedNum: 0,// 选中商品数量
+      checkList:[],//选中框
+      ischeckAll:false,
     }
   },
   mounted () {
-    this.getCartList()
+    this.axios.get('http://localhost:8082/cart/getCart').then(r=>{
+      console.log(r.data);
+      this.list=r.data;
+
+    })
   },
   methods: {
+    checkOne (fid) {
+        let idIndex = this.checkList.indexOf(fid)
+        if (idIndex >= 0) {
+          // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
+          this.checkList.splice(idIndex, 1)
+        } else {
+          // 选中该checkbox
+          this.checkList.push(fid)
+        }
+        if(this.list.length==this.checkList.length){
+          this.ischeckAll=true;
+        }
+        this.cartTotalPrice=0;
+        for(let i = 0;i<this.checkList.length;i++){
+
+          for(let j = 0;j<this.list.length;j++){
+              if(this.checkList[i]==this.list[j].fid){
+              this.cartTotalPrice=Math.floor((this.cartTotalPrice+this.list[j].fnum*this.list[j].fdiscount*this.list[j].fprice)*100)/100;
+              }
+          }
+        }
+    },
+    checkAll () {
+      this.ischeckAll = !this.ischeckAll
+      if (this.ischeckAll) {
+        // 全选时
+        this.checkList = []
+        this.list.forEach(function (item) {
+          this.checkList.push(item.fid)
+        }, this)
+      } else {
+        this.checkList = []
+      }
+      this.cartTotalPrice=0;
+      for(let i = 0;i<this.checkList.length;i++){
+
+        for(let j = 0;j<this.list.length;j++){
+            if(this.checkList[i]==this.list[j].fid){
+              this.cartTotalPrice=Math.floor((this.cartTotalPrice+this.list[j].fnum*this.list[j].fdiscount*this.list[j].fprice)*100)/100;
+            }
+        }
+      }
+    },
     // 获取购物车列表
     getCartList () {
       this.axios.get('/carts').then((res) => {
@@ -114,36 +165,53 @@ export default {
     },
     // 删除购物车商品
     delProduct (item) {
-      this.axios.delete(`/carts/${item.productId}`).then((res) => {
-        this.$message.success('删除成功')
-        this.renderData(res)
+      let index=0;
+      for(let i = 0;i<this.list.length;i++){
+        if(item.fid==this.list[i].fid){
+          index = i;
+        }
+      }
+      console.log(this.list[index]);
+      this.axios.post('http://localhost:8082/cart/deleteCartItem',this.list[index]).then(r=>{
+        console.log(r.data);
       })
+      this.list.splice(index,1);
+
     },
-    // 控制全选功能
-    toggleAll () {
-      const url = this.allChecked ? '/carts/unSelectAll' : '/carts/selectAll'
-      this.axios.put(url).then((res) => {
-        this.renderData(res)
-      })
-    },
+
     // 公共赋值
     renderData (res) {
       this.list = res.cartProductVoList || []
       this.allChecked = res.selectedAll
-      this.cartTotalPrice = res.cartTotalPrice
       this.checkedNum = this.list.filter(item => item.productSelected).length
     },
     // 购物车下单
     order () {
-      // 数组.every的功能：在数组中查找每一个元素是否有符合条件，符合返回true，不符合返回false。
-      // 即每一项item.productSelected为false时(没有选中任意一件商品)符合条件返回true，即isCheck=true；
-      // 只要有一项item.productSelected不为false，则isCheck=false
-      const isCheck = this.list.every(item => !item.productSelected)
-      if (isCheck) {
-        this.$message.warning('请选择一件商品')
-      } else {
-        this.$router.push('/order/confirm')
+      if(this.checkList.length==0){
+        this.$message.error("至少选择一项");
+      }else{
+        this.axios.post("http://localhost:8082/cart/deleteCartItems",this.checkList).then(r=>{
+          this.axios.get('http://localhost:8082/cart/getCart').then(d=>{
+            this.list=d.data;
+
+          });
+        })
       }
+    },
+    change(fnum,fid){
+      console.log(fnum);
+      console.log(fid);
+      if(fnum<1){
+        this.$message.error("不能再减了")
+        for(let i = 0;i<this.list.length;i++){
+          if(this.list[i].fid==fid){
+            console.log(this.list[i]);
+            this.list[i].fnum=1;
+          }
+        }
+      }
+
+
     }
   }
 }

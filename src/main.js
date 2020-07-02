@@ -43,16 +43,31 @@ axios.defaults.baseURL = '/api'
 // 接口响应拦截 （请求拦截没做）
 // 第一个参数，是请求响应200成功后的拦截（根据请求内容的状态字段判断拦截），
 // 第二个参数，是请求响应除200(如4xx/5xx)以外失败后的拦截
+<<<<<<< .mine
+
+
+
+
+
+=======
 axios.interceptors.response.use(function (response) {
   return response;
 }, (error) => {
   return Promise.reject(error);
 })
+>>>>>>> .theirs
 
+<<<<<<< .mine
+
+
+
+
+=======
 axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+>>>>>>> .theirs
 // 将axios挂载到Vue实例中，其他页面都可以this.axios.get()调用，不用再单独引入axios，更方便
 Vue.use(VueAxios, axios)
 Vue.use(VueCookie)

@@ -9,6 +9,20 @@ import SignUpDone from '../components/signUp/SignUpDone.vue';
 import AddAddress from '../components/myinfo/AddAddress.vue';
 import MyAddress from '../components/myinfo/MyAddress.vue';
 import MyOrder from '../components/myinfo/MyOrder.vue';
+<<<<<<< .mine
+import FoodDetail from '../views/foodDetail.vue'
+
+// Vue加载插件的语法
+
+
+
+
+
+
+
+
+
+=======
 import ClientCenter from '../components/clientCenter/ClientCenter.vue'
 import MyOrders from '../components/clientCenter/MyOrders.vue'
 import OrderDetails from '../components/clientCenter/OrderDetails.vue'
@@ -21,6 +35,7 @@ import UpdateUserInfo from '../components/clientCenter/UpdateUserInfo.vue'
 import MemberCenter from '../components/clientCenter/MemberCenter.vue'
 import AccountSetting from '../components/clientCenter/AccountSetting.vue'
 import UpdateIcon from '../components/clientCenter/UpdateIcon.vue'
+>>>>>>> .theirs
 Vue.use(VueRouter)
 
   const routes = [
@@ -51,6 +66,11 @@ Vue.use(VueRouter)
           component: () => import('./../views/detail.vue')
         }
       ]
+    },
+    {
+      path:'/detail',
+      name:'FoodDetail',
+      component:FoodDetail,
     },
     {
       path: '/login',
