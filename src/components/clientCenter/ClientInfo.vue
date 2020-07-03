@@ -5,34 +5,15 @@
         <h3>基本信息</h3>
       </div>
     </div>
+    <div class="nav_order">
+      <ul>
+        <li><router-link to="/clientCenter/info/updateUserInfo" active-class="a-active" exact><span>我的信息</span></router-link></li>
+        <li><router-link to="/clientCenter/info/memberCenter" active-class="a-active" exact><span>会员中心</span></router-link></li>
+      </ul>
+    </div>
     <div class="showArea">
       <div class="showInfo">
-        <el-form :inline="true"
-        status-icon
-        :model="userinfo"
-        label-width="80px"
-        :rules="updateInfoRules"
-
-        style="text-align: left;color: #999999;
-        font-size: 14px;
-        font-family: '\5b8b\4f53';"
-        ref="updateInfoForm">
-        	<el-form-item label="用户名" prop="username">
-        		<el-input v-model="userinfo.username" :disabled="this.disabledObj.username" placeholder="请输入用户名"  auto-complete="off" ></el-input>
-        	</el-form-item>
-          <br />
-        	<el-form-item label="微信号" prop="wechat_id" >
-            <span style="padding-left: 10px;">{{this.userinfo.wechat_id}}</span>
-          </el-form-item>
-          <br />
-        	<el-form-item label="手机号" prop="phone" >
-        		<el-input v-model="userinfo.phone" placeholder="请输入手机号" :disabled="this.disabledObj.phone" auto-complete="off"></el-input>
-        	</el-form-item>
-        </el-form>
-        <div style="padding: 50px 30px;">
-          <el-button v-if="this.updateState=='change'" type="info" size="mini" @click="updateUserinfo">修改</el-button>
-          <el-button v-if="this.updateState=='save'" type="primary" size="mini" @click="saveUserinfo">保存</el-button>
-        </div>
+        <router-view></router-view>
       </div>
       <div class="showInfoFrame">
         <InfoFrame></InfoFrame>
@@ -60,37 +41,14 @@
           state:1,
           scores:150,
         },
-        disabledObj:{
-          username: true,
-          phone: true,
-        },
-        updateInfoRules:{
-          phone:[
-            { required: true, message: "请输入手机号", trigger: "blur" },
-            {pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/,
-            message: '请输入正确的手机号', trigger: 'blur'}
-          ],
-          username:[
-            { required: true, message: "请输入用户名", trigger: "blur" }
-          ]
-        },
-        updateState: 'change',
+
       }
     },
     created() {
-
+      
     },
     methods:{
-      updateUserinfo(){
-        
-        
-        
-        this.updateState = 'save';
-      },
-      saveUserinfo(){
-        
-        this.updateState = 'change';
-      }
+
     }
   }
 </script>
@@ -100,7 +58,6 @@
     width: 100%;
     height: 95%;
     background-color: #00B43C;
-    display: block;
     box-sizing: border-box;
   }
   .mytitle{
@@ -125,13 +82,14 @@
     margin: 20px;
     display: flex;
     background-color: #FFE4C4;
-    height: 85%;
+    height: 78%;
   }
   .showInfoFrame{
     background-color: red;
     flex: 1;
     padding: 15px;
     height: 170px;
+    margin: 20px 0;
   }
   .showInfo{
     flex: 2;
@@ -145,4 +103,32 @@
     padding: 10px 20px;
   }
 
+  .nav_order{
+    padding: 10px 20px;
+    /* float: left; */
+    width: 100%;
+    height: 40px;
+    background-color: #999999;
+  }
+
+  ul{
+    list-style: none;
+  }
+  li{
+    list-style: none;
+    padding-right: 20px;
+     float: left;
+  }
+  .a-active{
+    color: #E4393C;
+    font-weight: 700;
+  }
+  a:hover {
+      color: #e4393c;
+      text-decoration: underline;
+  }
+  a {
+      color: #666666;
+      text-decoration: none;
+  }
 </style>

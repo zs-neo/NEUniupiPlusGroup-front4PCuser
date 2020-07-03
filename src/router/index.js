@@ -17,8 +17,8 @@ import MyCenter from '../components/clientCenter/MyCenter.vue'
 import MyCoupon from '../components/coupon/MyCoupon.vue';
 import CouponCenter from '../components/coupon/CouponCenter.vue';
 import ScoreCenter from '../components/coupon/ScoreCenter.vue';
-
-
+import UpdateUserInfo from '../components/clientCenter/UpdateUserInfo.vue'
+import MemberCenter from '../components/clientCenter/MemberCenter.vue'
 
 Vue.use(VueRouter)
 
@@ -137,7 +137,17 @@ Vue.use(VueRouter)
       {
         path: '/clientCenter/info',
         name: 'ClientInfo',
-        component: ClientInfo
+        component: ClientInfo,
+        children:[
+          {path: '/clientCenter/info/updateUserInfo',
+          name: 'UpdateUserInfo',
+          component: UpdateUserInfo},
+          {path: '/clientCenter/info/memberCenter',
+          name: 'MemberCenter',
+          component: MemberCenter},
+
+        ],
+        redirect: '/clientCenter/info/updateUserInfo',
       },{
         path: '/clientCenter/myCenter',
         name: 'MyCenter',
@@ -158,9 +168,9 @@ Vue.use(VueRouter)
             name: 'MyCoupon',
             component: MyCoupon
           },
-    
-      
-      
+
+
+
     ],
     redirect: '/clientCenter/myCenter'
   },
@@ -174,14 +184,14 @@ Vue.use(VueRouter)
       name: 'ScoreCenter',
       component: ScoreCenter
     },
-  
-  
+
+
   {
     path: '/orderDetails',
     name: 'OrderDetails',
     component: OrderDetails,
   }
-  
+
   ]
 
 const router = new VueRouter({

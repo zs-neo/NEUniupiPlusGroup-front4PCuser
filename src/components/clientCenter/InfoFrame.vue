@@ -5,19 +5,58 @@
         <img src="../../../public/imgs/icon/headerIcon.png"/>
 
       </div>
-      <div class="tab"><span class="rank" style="background-color: gold">青铜</span></div>
+      <div class="tab"><span class="rank" :style="userinfo.type==1?iconMember:iconCom">{{rank}}</span></div>
     </div>
     <div class="mainInfoArea">
-      <div><span class="title">用户名</span><span class="col">Jack Ma</span></div>
-      <div><span class="title">小厨点</span><span class="col">200</span></div>
-      <div><span class="title">会员类型</span><span class="col">普通用户</span></div>
-      <div><span class="title">认证时间</span><span class="col">2020-06-30</span></div>
+      <div><span class="title">用户名</span><span class="col">{{userinfo.username}}</span></div>
+      <div><span class="title">小厨点</span><span class="col">{{userinfo.scores}}</span></div>
+      <div><span class="title">会员类型</span><span :style="userinfo.type==1?memberStyle:comStyle" class="col">{{userinfo.type==0?'普通用户':'尊贵会员'}}</span></div>
+      <div><span class="title">认证时间</span><span class="col">{{userinfo.member.certificationdate}}</span></div>
 
     </div>
   </div>
 </template>
 
 <script>
+  export default{
+    data(){
+      return{
+        userinfo:{},
+        memberStyle: 'color: red;',
+        comStyle: 'color: #666;',
+        rank:'',
+        iconMember: 'background-color: gold',
+        iconCom: 'background-color: #FFFFFF',
+      }
+    },
+    created() {
+      this.setUserinfo();
+    },
+    methods:{
+      setUserinfo(){
+        this.userinfo = JSON.parse(sessionStorage.getItem('user'));
+        if(this.userinfo.member&&this.userinfo.member.certificationdate&&this.userinfo.member.certificationdate!=''){
+          this.userinfo.member.certificationdate =this.userinfo.member.certificationdate.split(" ")[0];
+        }else{
+          this.userinfo.member = {certificationdate:'敬请认证'};
+          // this.userinfo.member.certificationdate="敬请认证"
+        }
+        if(this.userinfo.type==1){
+          if(this.userinfo.member.accumulatescores&&this.userinfo.member.accumulatescores!=''){
+            if(this.userinfo.member.accumulatescores<500){
+              this.rank = '黄金';
+            }
+            else if(this.userinfo.member.accumulatescores>=500){
+              this.rank='白金';
+            }else if(this.userinfo.member.accumulatescores>=1000){
+              this.rank='钻石';
+            }
+          }
+        }
+
+      }
+    }
+  }
 </script>
 
 <style scoped>

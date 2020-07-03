@@ -125,7 +125,7 @@ export default {
   methods: {}
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../assets/scss/config.scss';
   @import '../../assets/scss/mixin.scss';
   @import '../../assets/css/couponcenter';

@@ -40,8 +40,8 @@ export default {
   name: 'login',
   data () {
     return {
-      username: '',
-      password: '',
+      username: '会员Test',
+      password: '123456',
       userId: ''
     }
   },
@@ -54,6 +54,7 @@ export default {
       }}).then(rs=>{
       	console.log(rs.data)
       	if(rs.data!=""){
+          console.log(rs.data);
       		sessionStorage.setItem("user",JSON.stringify(rs.data));
       		this.$router.push({
       		  // path:'/index'对应路由起的name:index
