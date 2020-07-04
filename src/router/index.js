@@ -12,7 +12,6 @@ import MyOrder from '../components/myinfo/MyOrder.vue';
 <<<<<<< .mine
 import FoodDetail from '../views/foodDetail.vue'
 
-// Vue加载插件的语法
 
 
 
@@ -22,7 +21,15 @@ import FoodDetail from '../views/foodDetail.vue'
 
 
 
-=======
+
+
+
+
+
+
+
+
+
 import ClientCenter from '../components/clientCenter/ClientCenter.vue'
 import MyOrders from '../components/clientCenter/MyOrders.vue'
 import OrderDetails from '../components/clientCenter/OrderDetails.vue'
@@ -35,7 +42,7 @@ import UpdateUserInfo from '../components/clientCenter/UpdateUserInfo.vue'
 import MemberCenter from '../components/clientCenter/MemberCenter.vue'
 import AccountSetting from '../components/clientCenter/AccountSetting.vue'
 import UpdateIcon from '../components/clientCenter/UpdateIcon.vue'
->>>>>>> .theirs
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -217,9 +224,7 @@ Vue.use(VueRouter)
     path: '/orderDetails',
     name: 'OrderDetails',
     component: OrderDetails,
-  }
-
-  ]
+  }  ]
 
 const router = new VueRouter({
   linkActiveClass: 'active',

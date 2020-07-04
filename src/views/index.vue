@@ -10,7 +10,6 @@
 		</div>
 
       <div class="swiper-box">
-
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item,index) in slideList" :key="index">
             <a :href="'/#/product/'+item.id"><img :src="item.img"></a>
@@ -137,36 +136,14 @@ export default {
           img: '/imgs/slider/slide-1.jpg'
         },
         {
-          id:'43',
+          id: '45',
           img: '/imgs/slider/slide-2.jpg'
         },
         {
-          id:'43',
+          id: '46',
           img: '/imgs/slider/slide-3.jpg'
       ],
-      menuList: [
-        // 6行4列的二维数组
-        [
-          {
-            id: 30,
-            img: '/imgs/item-box-1.png',
-            name: '小米CC9'
-          }, {
-            id: 31,
-            img: '/imgs/item-box-2.png',
-            name: '小米8青春版'
-          }, {
-            id: 32,
-            img: '/imgs/item-box-3.jpg',
-            name: 'Redmi K20 Pro'
-          }, {
-            id: 33,
-            img: '/imgs/item-box-4.jpg',
-            name: '移动4G专区'
-          }
-        ],
-        [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]
-      ],
+
       adsList: [
         {
           id: 33,
@@ -188,20 +165,8 @@ export default {
     }
   },
 
- //  mounted () {
- //    this.init()
-	// this.axios.get(`${server}${getAllByPage}`,{params:{
-	// 			  				 pageNum: this.currentPage,
-	// 			  				 pageSize:this.PageSize,
-	// 			  	 		}}).then(r=>{
-	// 			  				console.log(r.data.list);
-	//    this.Events=r.data.list;
-	//    this.totalCount=r.data.total;
-
-	//  })
- //  },
-
   methods: {
+
     dos(){
       this.axios.get('/user/hi', {
         params: {

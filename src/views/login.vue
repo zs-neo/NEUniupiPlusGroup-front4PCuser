@@ -67,8 +67,7 @@ export default {
       	}else{
       		 this.$message.error("密码错误！")  ;
       	}
-      });
-    },
+      });    },
     register () {
       this.axios.post('/user/register', {
         username: 'jerrybro',
