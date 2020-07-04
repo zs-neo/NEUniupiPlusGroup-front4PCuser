@@ -9,6 +9,8 @@
       <ul>
         <li><router-link to="/clientCenter/info/updateUserInfo" active-class="a-active" exact><span>我的信息</span></router-link></li>
         <li><router-link to="/clientCenter/info/memberCenter" active-class="a-active" exact><span>会员中心</span></router-link></li>
+        <li><router-link to="/clientCenter/info/accountSetting" active-class="a-active" exact><span>账号设置</span></router-link></li>
+        <li><router-link to="/clientCenter/info/updateIcon" active-class="a-active" exact><span>头像上传</span></router-link></li>
       </ul>
     </div>
     <div class="showArea">
@@ -45,7 +47,7 @@
       }
     },
     created() {
-      
+
     },
     methods:{
 

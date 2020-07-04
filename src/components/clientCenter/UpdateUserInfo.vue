@@ -73,20 +73,35 @@
               showClose: false,
               right: true
             }).then(() => {
+              var avaliable = false;
               let client = {
                 clientid:this.userinfo.clientid,
               };
               if(this.userinfo.phone!=this.userinfoCopy.phone){
                 client.phone = this.userinfo.phone;
+                avaliable = true;
+              }else{
+
               }
-              console.log(client);
-              Vue.axios.post(`http://localhost:8082/client/update`,client).then(rs=>{
-                if(rs.data.status){
-                  this.$message.success("更新成功");
-                }else{
-                  this.$message.error(rs.data.msg);
-                }
-              });
+              if(avaliable){
+                console.log(client);
+                Vue.axios.post(`http://localhost:8082/client/update`,client).then(rs=>{
+                  if(rs.data.status){
+                    this.$message.success("更新成功");
+                    Vue.axios.get(`http://localhost:8082/client/getClient`,{params:{
+                      clientid: this.userinfo.clientid,
+                    }}).then(rs=>{
+                      sessionStorage.setItem("user", JSON.stringify(rs.data));
+                      location.reload();
+                    });
+                  }else{
+                    this.$message.error(rs.data.msg);
+                  }
+                });
+              }else{
+                this.$message.error("更新信息与当前信息相同");
+              }
+
               this.disabledObj.phone = true;
               this.updateState = 'change';
             }).catch(() => {

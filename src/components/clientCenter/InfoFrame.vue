@@ -2,7 +2,7 @@
   <div class="infoFrame">
     <div class="iconArea">
       <div class="imgBorder">
-        <img src="../../../public/imgs/icon/headerIcon.png"/>
+        <img :src="iconShowWay"/>
 
       </div>
       <div class="tab"><span class="rank" :style="userinfo.type==1?iconMember:iconCom">{{rank}}</span></div>
@@ -31,6 +31,15 @@
     },
     created() {
       this.setUserinfo();
+    },
+    computed:{
+    	iconShowWay(){
+    		if(this.userinfo.icon){
+    			return `http://localhost:8082/res/${this.userinfo.icon}`;
+    		}else{
+    			return require('../../../public/imgs/icon/headerIcon.png');
+    		}
+    	}
     },
     methods:{
       setUserinfo(){

@@ -19,7 +19,8 @@ import CouponCenter from '../components/coupon/CouponCenter.vue';
 import ScoreCenter from '../components/coupon/ScoreCenter.vue';
 import UpdateUserInfo from '../components/clientCenter/UpdateUserInfo.vue'
 import MemberCenter from '../components/clientCenter/MemberCenter.vue'
-
+import AccountSetting from '../components/clientCenter/AccountSetting.vue'
+import UpdateIcon from '../components/clientCenter/UpdateIcon.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -145,6 +146,12 @@ Vue.use(VueRouter)
           {path: '/clientCenter/info/memberCenter',
           name: 'MemberCenter',
           component: MemberCenter},
+          {path: '/clientCenter/info/accountSetting',
+          name: 'AccountSetting',
+          component: AccountSetting},
+          {path: '/clientCenter/info/updateIcon',
+          name: 'UpdateIcon',
+          component: UpdateIcon},
 
         ],
         redirect: '/clientCenter/info/updateUserInfo',
