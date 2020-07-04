@@ -9,39 +9,12 @@ import SignUpDone from '../components/signUp/SignUpDone.vue';
 import AddAddress from '../components/myinfo/AddAddress.vue';
 import MyAddress from '../components/myinfo/MyAddress.vue';
 import MyOrder from '../components/myinfo/MyOrder.vue';
-<<<<<<< .mine
+
 import FoodDetail from '../views/foodDetail.vue'
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import ClientCenter from '../components/clientCenter/ClientCenter.vue'
-import MyOrders from '../components/clientCenter/MyOrders.vue'
-import OrderDetails from '../components/clientCenter/OrderDetails.vue'
-import ClientInfo from '../components/clientCenter/ClientInfo.vue'
-import MyCenter from '../components/clientCenter/MyCenter.vue'
-import MyCoupon from '../components/coupon/MyCoupon.vue';
-import CouponCenter from '../components/coupon/CouponCenter.vue';
-import ScoreCenter from '../components/coupon/ScoreCenter.vue';
-import UpdateUserInfo from '../components/clientCenter/UpdateUserInfo.vue'
-import MemberCenter from '../components/clientCenter/MemberCenter.vue'
-import AccountSetting from '../components/clientCenter/AccountSetting.vue'
-import UpdateIcon from '../components/clientCenter/UpdateIcon.vue'
 
 Vue.use(VueRouter)
 
@@ -224,7 +197,6 @@ Vue.use(VueRouter)
     path: '/orderDetails',
     name: 'OrderDetails',
     component: OrderDetails,
-  }  ]
 
 const router = new VueRouter({
   linkActiveClass: 'active',

@@ -45,16 +45,9 @@ axios.defaults.baseURL = '/api'
 // 第二个参数，是请求响应除200(如4xx/5xx)以外失败后的拦截
 
 
-axios.interceptors.response.use(function (response) {
-  return response;
-}, (error) => {
-  return Promise.reject(error);
-})Vue.use(VueAxios, axios);
-Vue.config.productionTip = false;
-Vue.use(ElementUI);axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
-Vue.use(ElementUI);// 将axios挂载到Vue实例中，其他页面都可以this.axios.get()调用，不用再单独引入axios，更方便
+
 Vue.use(VueAxios, axios)
 Vue.use(VueCookie)
 Vue.use(VueLazyLoad, {
