@@ -54,7 +54,7 @@
     </div>
     <service-bar></service-bar>
   </div>
-  
+
 </template>
 <script>
 import OrderHeader from './../components/OrderHeader'
@@ -194,7 +194,7 @@ export default {
         this.$Message.error("至少选择一项");
       }else{
         this.$router.push({
-          path:'/order/confirm',
+          path:'/confirm',
           query:{list:this.checkList}
         })
       }

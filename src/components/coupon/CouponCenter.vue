@@ -16,17 +16,13 @@
     </div>
     </div>
   <div class="container">
-
     <div class="img">
-    <img class="imgclass"  src="../../../public/imgs/slider/slide-5.jpg"><img>
-
-   <img class="imgclass1"  src="../../../public/imgs/slider/slide-2.jpg"><img>
-
+      <img class="imgclass"  src="../../../public/imgs/slider/slide-1.jpg"><img>
+      <img class="imgclass"  src="../../../public/imgs/slider/slide-2.jpg"><img>
     </div>
-
 <div style="margin-left: 90px;">
   <div class="font">
-<center>为你推荐好卷</center>
+<center>为你推荐好券</center>
 </div>
 <div class="coupon coupon-wave-left coupon-yellow">
 	<div class="coupon-info coupon-hole coupon-info-right-dashed">
@@ -130,4 +126,13 @@ export default {
   @import '../../assets/scss/mixin.scss';
   @import '../../assets/css/couponcenter';
 
+  .img{
+    margin: 0px !important;
+    text-align: center;
+    display: flex;
+  }
+  .imgclass{
+    padding: 10px;
+    flex: 1;
+  }
 </style>

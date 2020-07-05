@@ -7,8 +7,8 @@
           </div>
           <div class="topbar-user">
             <!-- <a href="javascript:;" v-if="username">{{username}}</a> -->
-           <a href="javascript:;" v-if="!username" @click="login()">登录</a>
-            <a href="javascript:;" v-if="username" @click="logout()">退出</a>
+           <a href="javascript:;" v-if="!user" @click="login()">登录</a>
+            <a href="javascript:;" v-if="user" @click="logout()">退出</a>
             <a href="/clientCenter/myOrders" >我的订单</a>
             <a href="/clientCenter">个人中心</a>
             <a href="javascript:;"  @click="goToFreeback()">意见反馈</a>
@@ -34,7 +34,9 @@ export default {
     }
   },
   computed: {
-
+    user () {
+      return JSON.parse(sessionStorage.getItem("user"));
+    },
     /* 注释部分等同 ...mapState(['username','cartCount']) ，这只是简写方式语法糖而已
     username () {
       return this.$store.state.username
@@ -81,12 +83,14 @@ export default {
     logout () {
       // 发送请求给后端时，后端会拿到session的id，进行清空
       this.axios.post('/user/logout').then(() => {
-        this.$message.success('退出成功')
+        this.$message.success('退出成功');
+        this.$router.push('/login');
         // 退出登录时，将cookie的userid马上置空（expires: '-1'的意思时，cookie立即失效）
         //            再将vuex中的username和cartCount置空
-        this.$cookie.set('userId', '', { expires: '-1' })
-        this.$store.dispatch('saveUserName', '')
-        this.$store.dispatch('saveCartCount', '0')
+        // this.$cookie.set('userId', '', { expires: '-1' })
+        // this.$store.dispatch('saveUserName', '')
+        // this.$store.dispatch('saveCartCount', '0')
+        sessionStorage.clear();
       })
     },
     goToCart () {

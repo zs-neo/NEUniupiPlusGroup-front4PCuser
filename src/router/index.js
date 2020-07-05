@@ -50,6 +50,87 @@ Vue.use(VueRouter)
           path: '/detail/:id',
           name: 'detail',
           component: () => import('./../views/detail.vue')
+        },
+        {
+          path: '/cart',
+          name: 'cart',
+          component: () => import('./../views/cart.vue')
+        },
+        {
+          path: '/confirm',
+          name: 'Confirm',
+          component: () => import('./../views/orderConfirm.vue')
+        },
+        {
+          path: '/clientCenter',
+          name: 'ClientCenter',
+          component: ClientCenter,
+          children:[
+            {
+              path: '/clientCenter/myOrders',
+              name: 'MyOrders',
+              component: MyOrders
+            },
+            {
+              path: '/clientCenter/info',
+              name: 'ClientInfo',
+              component: ClientInfo,
+              children:[
+                {path: '/clientCenter/info/updateUserInfo',
+                name: 'UpdateUserInfo',
+                component: UpdateUserInfo},
+                {path: '/clientCenter/info/memberCenter',
+                name: 'MemberCenter',
+                component: MemberCenter},
+                {path: '/clientCenter/info/accountSetting',
+                name: 'AccountSetting',
+                component: AccountSetting},
+                {path: '/clientCenter/info/updateIcon',
+                name: 'UpdateIcon',
+                component: UpdateIcon},
+
+              ],
+              redirect: '/clientCenter/info/updateUserInfo',
+            },{
+              path: '/clientCenter/myCenter',
+              name: 'MyCenter',
+              component: MyCenter
+            },
+           {
+                  path: '/clientCenter/myAddress',
+                  name: 'MyAddress',
+                  component: MyAddress
+                },
+                {
+                  path: '/clientCenter/addAddress',
+                  name: 'AddAddress',
+                  component: AddAddress
+                },
+                {
+                  path: '/clientCenter/myCoupon',
+                  name: 'MyCoupon',
+                  component: MyCoupon
+                },
+
+
+
+          ],
+          redirect: '/clientCenter/myCenter'
+        },
+         {
+            path: '/couponCenter',
+            name: 'CouponCenter',
+            component: CouponCenter
+          },
+          {
+            path: '/scoreCenter',
+            name: 'ScoreCenter',
+            component: ScoreCenter
+          },
+        {
+          path: '/orderDetails',
+          name: 'OrderDetails',
+          component: OrderDetails,
         }
       ]
     },
@@ -63,16 +144,13 @@ Vue.use(VueRouter)
       name: 'login',
       component: () => import('./../views/login.vue')
     },
-    {
-      path: '/cart',
-      name: 'cart',
-      component: () => import('./../views/cart.vue')
-    },
+
     {
       path: '/scanCode',
       name: 'ScanCode',
       component: () => import('./../components/ScanPayCode.vue')
     },
+
     {
       path: '/order',
       name: 'order',
@@ -131,77 +209,7 @@ Vue.use(VueRouter)
 	  ]
 
 	},
-  {
-    path: '/clientCenter',
-    name: 'ClientCenter',
-    component: ClientCenter,
-    children:[
-      {
-        path: '/clientCenter/myOrders',
-        name: 'MyOrders',
-        component: MyOrders
-      },
-      {
-        path: '/clientCenter/info',
-        name: 'ClientInfo',
-        component: ClientInfo,
-        children:[
-          {path: '/clientCenter/info/updateUserInfo',
-          name: 'UpdateUserInfo',
-          component: UpdateUserInfo},
-          {path: '/clientCenter/info/memberCenter',
-          name: 'MemberCenter',
-          component: MemberCenter},
-          {path: '/clientCenter/info/accountSetting',
-          name: 'AccountSetting',
-          component: AccountSetting},
-          {path: '/clientCenter/info/updateIcon',
-          name: 'UpdateIcon',
-          component: UpdateIcon},
 
-        ],
-        redirect: '/clientCenter/info/updateUserInfo',
-      },{
-        path: '/clientCenter/myCenter',
-        name: 'MyCenter',
-        component: MyCenter
-      },
-     {
-            path: '/clientCenter/myAddress',
-            name: 'MyAddress',
-            component: MyAddress
-          },
-          {
-            path: '/clientCenter/addAddress',
-            name: 'AddAddress',
-            component: AddAddress
-          },
-          {
-            path: '/clientCenter/myCoupon',
-            name: 'MyCoupon',
-            component: MyCoupon
-          },
-
-
-
-    ],
-    redirect: '/clientCenter/myCenter'
-  },
-   {
-      path: '/couponCenter',
-      name: 'CouponCenter',
-      component: CouponCenter
-    },
-    {
-      path: '/scoreCenter',
-      name: 'ScoreCenter',
-      component: ScoreCenter
-    },
-  {
-    path: '/orderDetails',
-    name: 'OrderDetails',
-    component: OrderDetails,
-  }
 
   ]
 

@@ -25,13 +25,13 @@
         </div>
       </div>
     </div>
-    <div class="footer">
+<!--    <div class="footer">
       <div class="footer-link">
         <a href="http://www.jerrybro.cn" target="_blank">登录页</a><span>|</span>
         <a href="http://www.jerrybro.cn" target="_blank">中软实训M组</a>
       </div>
       <p class="copyright">Copyright ©2020 NEU_M Rights Reserved.</p>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -41,7 +41,7 @@ export default {
   data () {
     return {
       username: '会员Test',
-      password: '123456',
+      password: '1234567',
       userId: ''
     }
   },
@@ -56,14 +56,15 @@ export default {
       	if(rs.data!=""){
           console.log(rs.data);
       		sessionStorage.setItem("user",JSON.stringify(rs.data));
-      		this.$router.push({
+      		this.$router.push(
+
+          {
       		  // path:'/index'对应路由起的name:index
       		  // 【注：用params传参必须使用name跳转路由；而用query传参必须使用path跳转路由】
-      		  name: 'index',
-      		  params: {
-      		    from: 'login'
-      		  }
-      		})
+      		  name: 'home',
+
+      		}
+          );
       	}else{
       		 this.$message.error("密码错误！")  ;
       	}
@@ -83,7 +84,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .login{
   &>.container{
     height:113px;
@@ -93,6 +94,7 @@ export default {
     }
   }
   .wrapper{
+    position: relative;
     background:url('/imgs/login-bg.jpg') no-repeat center;
     .container{
       height:576px;
@@ -105,7 +107,7 @@ export default {
         background-color:#ffffff;
         position:absolute;
         bottom:29px;
-        right:0;
+        right:20px;
         h3{
           line-height:23px;
           font-size:24px;
