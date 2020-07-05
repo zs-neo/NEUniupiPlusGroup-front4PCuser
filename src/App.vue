@@ -2,19 +2,16 @@
   <div id="app">
       <NavHeader></NavHeader>
     <router-view></router-view>
-    <NavFooter></NavFooter>
   </div>
 </template>
 
 <script>
 // import storage from './storage'
 import NavHeader from './components/NavHeader.vue'
-import NavFooter from './components/NavFooter.vue'
 export default {
   name: 'app',
   components: {
-     NavHeader,NavFooter
-
+     NavHeader
   },
   data () {
     return {

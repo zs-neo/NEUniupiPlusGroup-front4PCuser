@@ -12,5 +12,8 @@ export default {
   },
   saveCartCount (context, count) {
     context.commit('saveCartCount', count)
+  },
+  SET_SIGN_UP_SETP (context, username) {
+    context.commit('SET_SIGN_UP_SETP', username)
   }
 }

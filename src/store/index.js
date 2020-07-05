@@ -7,7 +7,8 @@ Vue.use(Vuex)
 // vuex中的状态变量通过：this.$store.state.username 来读取
 const state = {
   username: '',
-  cartCount: 0
+  cartCount: 0,
+  signUpStep:0
 }
 
 
