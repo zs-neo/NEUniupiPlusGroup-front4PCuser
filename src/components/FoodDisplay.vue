@@ -37,7 +37,7 @@
                      <span style="color: #ED4014; font-size: 20px;">{{food.fprice*food.fdiscount}}<del>￥{{food.fprice}}</del></span>
                    </div>
                    <div>
-                     <Button type="error" style="position: relative; width: 110px; float: left;" @click="route(food.id)">查看详情</Button>
+                     <Button type="error" style="position: relative; width: 115px; height: 33px; float: left;" @click="route(food.id)">查看详情</Button>
                      <Button type="error" shape="circle" icon="ios-add-circle-outline" style="float: right;" @click="addToOrder(food.id)"></Button>
                    </div>
                  </div>
@@ -132,8 +132,12 @@
            fnum:1,
            }
            this.axios.post("http://localhost:8082/cart/insertCart",cartFood).then(r=>{
-               this.$Message.success('已添加至购物车')
+               this.$Message.success('已添加至购物车');
                console.log(r)
+               this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d=>{
+                 this.$store.dispatch("saveCartCount",d.data);
+               })
+
            })
         })
 

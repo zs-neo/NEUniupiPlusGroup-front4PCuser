@@ -63,11 +63,11 @@
             <ul>
               <li v-for="(item,index) in cartList" :key="index">
                 <div class="good-name">
-                  <img v-lazy="item.productMainImage" alt="">
-                  <span>{{item.productName + ' ' + item.productSubtitle}}</span>
+                  <img v-lazy="`${imgPath}${item.fpic}`" >
+                  <span>{{item.fname}}</span>
                 </div>
-                <div class="good-price">{{item.productPrice}}元x{{item.quantity}}</div>
-                <div class="good-total">{{item.productTotalPrice}}元</div>
+                <div class="good-price">{{item.fprice*item.fdiscount}}元x{{item.fnum}}</div>
+                <div class="good-total">{{item.fprice*item.fdiscount*item.fnum}}元</div>
               </li>
             </ul>
           </div>
@@ -87,11 +87,11 @@
             </div>
             <div class="item">
               <span class="item-name">商品总价：</span>
-              <span class="item-val">{{cartTotalPrice}}元</span>
+              <span class="item-val">{{totalPrice}}元</span>
             </div>
             <div class="item">
               <span class="item-name">优惠活动：</span>
-              <span class="item-val">0元</span>
+              <span class="item-val">{{activityPrice}}元</span>
             </div>
             <div class="item">
               <span class="item-name">运费：</span>
@@ -103,7 +103,7 @@
             </div>
           </div>
           <div class="btn-group">
-            <a href="/#/cart" class="btn btn-default btn-large">返回购物车</a>
+            <a href="/cart" class="btn btn-default btn-large">返回购物车</a>
             <a href="javascript:;" class="btn btn-large" @click="orderSubmit">去结算</a>
           </div>
         </div>
@@ -124,25 +124,7 @@
             <input type="text" class="input" placeholder="手机号" v-model="checkedItem.receiverMobile">
           </div>
           <div class="item">
-            <select name="province" v-model="checkedItem.receiverProvince">
-              <option value="浙江">浙江省</option>
-              <option value="广东">广东省</option>
-              <option value="北京">北京省</option>
-              <option value="尽情期待">该功能未做，尽情期待</option>
-            </select>
-            <select name="city" v-model="checkedItem.receiverCity">
-              <option value="台州">台州市</option>
-              <option value="杭州">杭州市</option>
-              <option value="宁波">宁波市</option>
-              <option value="嘉兴">嘉兴市</option>
-            </select>
-            <select name="district" v-model="checkedItem.receiverDistrict">
-              <option value="路桥">路桥区</option>
-              <option value="椒江">椒江区</option>
-              <option value="黄岩">黄岩区</option>
-              <option value="天台">天台区</option>
-              <option value="临海">临海区</option>
-            </select>
+            <Distpicker :province="checkedItem.receiverProvince" :city="checkedItem.receiverCity" :area="checkedItem.receiverDistrict"></Distpicker>
           </div>
           <div class="item">
             <textarea name="street" v-model="checkedItem.receiverAddress"></textarea>
@@ -165,21 +147,28 @@
         <p>您确认要删除此地址吗？</p>
       </template>
     </modal>
+
   </div>
 </template>
 <script>
 import Modal from './../components/Modal'
 import OrderHeader from './../components/OrderHeader'
+import Distpicker from 'v-distpicker'
 export default {
   name: 'order-confirm',
   components: {
     Modal,
-    OrderHeader
+    OrderHeader,
+    Distpicker
   },
   data () {
     return {
+      checkList:[],
+      imgPath:"http://localhost:8082/res/",
       list: [], // 收货地址列表
       cartList: [], // 购物车中需要结算的商品列表
+      totalPrice:0,//未减免金额
+      activityPrice:0,//活动减免金额
       cartTotalPrice: 0, // 商品总金额
       count: 0, // 商品结算数量
       checkedItem: {}, // 被操作的表单项
@@ -191,6 +180,7 @@ export default {
   },
   mounted () {
     this.getAddressList()
+    this.checkList=this.$route.query.list;
     this.getCartList()
   },
   methods: {
@@ -275,13 +265,26 @@ export default {
       this.showEditModal = false
     },
     getCartList () {
-      this.axios.get('/carts').then((res) => {
-        const list = res.cartProductVoList// 获取购物车中所有商品数据
-        this.cartTotalPrice = res.cartTotalPrice// 商品总金额
-        this.cartList = list.filter(item => item.productSelected)
-        this.cartList.map((item) => {
-          this.count += item.quantity
-        })
+      // this.axios.get('/carts').then((res) => {
+      //   const list = res.cartProductVoList// 获取购物车中所有商品数据
+      //   this.cartTotalPrice = res.cartTotalPrice// 商品总金额
+      //   this.cartList = list.filter(item => item.productSelected)
+      //   this.cartList.map((item) => {
+      //     this.count += item.quantity
+      //   })
+      // })
+      this.axios.post("http://localhost:8082/cart/getCartsByFids",this.checkList).then(r=>{
+        console.log(r.data);
+        this.cartList=r.data;
+        this.count=r.data.length;
+        this.cartTotalPrice=0;
+        this.totalPrice=0;
+        for(let i = 0;i<this.count;i++){
+          this.totalPrice+=Math.floor((r.data[i].fnum*r.data[i].fprice)*100)/100;
+          this.cartTotalPrice+=Math.floor((r.data[i].fnum*r.data[i].fprice*r.data[i].fdiscount)*100)/100;
+        }
+        this.activityPrice=Math.floor((this.cartTotalPrice-this.totalPrice)*100)/100;
+
       })
     },
     // 订单提交

@@ -11,6 +11,7 @@ export default {
   saveCartCount (state, count) {
     state.cartCount = count
   }
+
   
 }
 // 设置注册步骤

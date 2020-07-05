@@ -31,7 +31,7 @@
               <div class="item-num">
 
 
-                  <Input type="number" style="width: 70px;" @on-change="change(item.fnum,item.fid)" v-model="item.fnum"></Input>
+                  <InputNumber :min="1" style="width: 70px;" @on-change="change(item.fnum,item.fid)" v-model="item.fnum"></InputNumber>
 
 
               </div>
@@ -52,10 +52,9 @@
         </div>
       </div>
     </div>
-
     <service-bar></service-bar>
-    <nav-footer></nav-footer>
   </div>
+  
 </template>
 <script>
 import OrderHeader from './../components/OrderHeader'
@@ -174,6 +173,10 @@ export default {
       console.log(this.list[index]);
       this.axios.post('http://localhost:8082/cart/deleteCartItem',this.list[index]).then(r=>{
         console.log(r.data);
+        this.$Message.success("删除成功");
+        this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d=>{
+          this.$store.dispatch("saveCartCount",d.data);
+        })
       })
       this.list.splice(index,1);
 
@@ -188,28 +191,31 @@ export default {
     // 购物车下单
     order () {
       if(this.checkList.length==0){
-        this.$message.error("至少选择一项");
+        this.$Message.error("至少选择一项");
       }else{
-        this.axios.post("http://localhost:8082/cart/deleteCartItems",this.checkList).then(r=>{
-          this.axios.get('http://localhost:8082/cart/getCart').then(d=>{
-            this.list=d.data;
-
-          });
+        this.$router.push({
+          path:'/order/confirm',
+          query:{list:this.checkList}
         })
       }
+      // }else{
+      //   this.axios.post("http://localhost:8082/cart/deleteCartItems",this.checkList).then(r=>{
+      //     this.axios.get('http://localhost:8082/cart/getCart').then(d=>{
+      //       this.list=d.data;
+
+      //     });
+      //   })
+      // }
     },
     change(fnum,fid){
       console.log(fnum);
       console.log(fid);
-      if(fnum<1){
-        this.$message.error("不能再减了")
-        for(let i = 0;i<this.list.length;i++){
-          if(this.list[i].fid==fid){
-            console.log(this.list[i]);
-            this.list[i].fnum=1;
-          }
-        }
-      }
+      this.axios.get("http://localhost:8082/cart/updataCart",{params:{
+        fnum:fnum,
+        fid:fid
+      }}).then(r=>{
+        console.log(r.data);
+      })
 
 
     }

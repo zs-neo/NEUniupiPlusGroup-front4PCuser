@@ -63,9 +63,7 @@
                  <div class="dt"><span>份数</span></div>
               </div>
               <div class="dd">
-                  <Button icon="ios-remove" @click="minus"></Button>
-                  <Input v-model="num" style="width: 50px" />
-                  <Button icon="ios-add" @click="add"></Button>
+                  <InputNumber  v-model="num" :min="1" style="width: 50px;position: relative;" />
               </div>
             </div>
              <br>
@@ -76,7 +74,7 @@
               </div>
               <div class="dd">
                 <Badge :count="typeCount">
-                  <Button type="error" style="width: 100px;" @click="addToOrder">加入购物车</Button>
+                  <Button type="error" style="width: 100px;position: relative;" @click="addToOrder">加入购物车</Button>
                     <a href="#" class="demo-badge"></a>
                 </Badge>
               </div>
@@ -110,7 +108,7 @@
         <div class="recommend">
             <div class="extra">
               <div class="track-tit">
-                <img src="../assets/logo.png" />
+                <img src="../../public/imgs/title.jpg" style="width: 300px;height: 300px;" />
                 <h3>店长推荐</h3>
                 <span></span>
               </div>
@@ -133,7 +131,7 @@
                 <Input v-model="fname" placeholder="请输入食品名" style="width: 150px;"></Input>
             </FormItem>
             <FormItem>
-                <Button type="primary">搜索</Button>
+                <Button type="primary" style="width: 75px;">搜索</Button>
             </FormItem>
 
            </Form>
@@ -255,6 +253,7 @@
           this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(r=>{
             console.log(r.data);
             this.typeCount=r.data;
+            this.$store.dispatch("saveCartCount",r.data);
           });
         });
       }

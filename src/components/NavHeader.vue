@@ -6,9 +6,9 @@
 
           </div>
           <div class="topbar-user">
-            <a href="javascript:;" v-if="username">{{username}}</a>
-            <a href="javascript:;" v-if="!username" @click="login()">登录</a>
-            <a href="javascript:;" v-if="username" @click="logout()">退出</a>
+            <!-- <a href="javascript:;" v-if="username">{{username}}</a> -->
+<!--            <a href="javascript:;" v-if="!username" @click="login()">登录</a>
+            <a href="javascript:;" v-if="username" @click="logout()">退出</a> -->
             <a href="/clientCenter/myOrders" >我的订单</a>
             <a href="/clientCenter">个人中心</a>
             <a href="javascript:;"  @click="goToFreeback()">意见反馈</a>
@@ -42,7 +42,10 @@ export default {
     cartCount () {
       return this.$store.state.cartCount
     } */
-    ...mapState(['username', 'cartCount'])
+    cartCount () {
+      return this.$store.state.cartCount;
+    }
+    // ...mapState(['username', 'cartCount'])
   },
   filters: {
     currency (val) {
@@ -57,6 +60,9 @@ export default {
     if (params && params.from === 'login') {
       this.getCartCount()
     }
+	this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d=>{
+	  this.$store.dispatch("saveCartCount",d.data);
+	})
   },
   methods: {
     login () {

@@ -141,7 +141,8 @@ export default {
         },
         {
           id: '46',
-          img: '/imgs/slider/slide-3.jpg'
+          img: '/imgs/slider/slide-3.jpg',
+        }
       ],
 
       adsList: [
@@ -164,7 +165,11 @@ export default {
       showModal: false
     }
   },
-
+  created() {
+    this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(r=>{
+      this.$store.dispatch("saveCartCount",r.data);
+    })
+  },
   methods: {
 
     dos(){

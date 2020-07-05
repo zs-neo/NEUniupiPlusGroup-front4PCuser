@@ -9,6 +9,8 @@ const state = {
   username: '',
   cartCount: 0
 }
+
+
 export default new Vuex.Store({
   state,
   mutations,
