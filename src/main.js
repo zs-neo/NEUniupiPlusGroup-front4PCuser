@@ -62,15 +62,26 @@ axios.defaults.timeout = 8000
 //   return Promise.reject(error)
 // })
 
-// 将axios挂载到Vue实例中，其他页面都可以this.axios.get()调用，不用再单独引入axios，更方便
-Vue.use(VueAxios, axios)
+
+
+axios.interceptors.response.use(function (response) {
+  return response;
+}, (error) => {
+  return Promise.reject(error);
+})
+Vue.use(VueAxios, axios);
+Vue.config.productionTip = false;
+Vue.use(ElementUI);
+axios.defaults.withCredentials = true;
+
+
+
+
 Vue.use(VueCookie)
 Vue.use(VueLazyLoad, {
   loading: '/imgs/loading-svg/loading-bars.svg'
 })
-// 将element-ui中的Message模块挂载到Vue实例的$message属性中【注：$message是(通过prototype原型属性来操作的)自定义的名字】
-Vue.prototype.$message = Message
-Vue.config.productionTip = false
+
 
 new Vue({
   store,

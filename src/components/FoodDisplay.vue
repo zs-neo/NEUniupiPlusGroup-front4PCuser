@@ -228,7 +228,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .menu-food{
     position: relative;
     left: 50px;

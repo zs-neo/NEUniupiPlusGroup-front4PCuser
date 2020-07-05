@@ -262,7 +262,7 @@
 
 </script>
 
-<style>
+<style scoped>
   .product-intro {
       position: relative;
       *z-index: 1;

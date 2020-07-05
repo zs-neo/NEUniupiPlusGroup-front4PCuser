@@ -144,7 +144,23 @@ Vue.use(VueRouter)
       {
         path: '/clientCenter/info',
         name: 'ClientInfo',
-        component: ClientInfo
+        component: ClientInfo,
+        children:[
+          {path: '/clientCenter/info/updateUserInfo',
+          name: 'UpdateUserInfo',
+          component: UpdateUserInfo},
+          {path: '/clientCenter/info/memberCenter',
+          name: 'MemberCenter',
+          component: MemberCenter},
+          {path: '/clientCenter/info/accountSetting',
+          name: 'AccountSetting',
+          component: AccountSetting},
+          {path: '/clientCenter/info/updateIcon',
+          name: 'UpdateIcon',
+          component: UpdateIcon},
+
+        ],
+        redirect: '/clientCenter/info/updateUserInfo',
       },{
         path: '/clientCenter/myCenter',
         name: 'MyCenter',
