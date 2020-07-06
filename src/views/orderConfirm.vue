@@ -71,13 +71,18 @@
               </li>
             </ul>
           </div>
+
+          <div class="remark" style="padding: 40px 0px; ">
+            <span style="padding-right: 25px;width: 30px; font-size: 16px; font-weight: 900;">备注</span>
+            <span ><el-input style="width:60%"  v-model="this.remark" placeholder="备注"></el-input></span>
+          </div>
           <div class="item-shipping">
             <h2>配送方式</h2>
-            <span>包邮</span>
+            <span>专员配送</span>
           </div>
           <div class="item-invoice">
             <h2>发票</h2>
-            <a href="javascript:;">电子发票</a>
+            <a href="javascript:;">纸质发票</a>
             <a href="javascript:;">个人</a>
           </div>
           <div class="detail">
@@ -94,7 +99,7 @@
               <span class="item-val">{{activityPrice}}元</span>
             </div>
             <div class="item">
-              <span class="item-name">运费：</span>
+              <span class="item-name">配送费：</span>
               <span class="item-val">0元</span>
             </div>
             <div class="item-total">
@@ -103,8 +108,8 @@
             </div>
           </div>
           <div class="btn-group">
-            <a href="#" @click="backToCart" class="btn btn-default btn-large">返回购物车</a>
-            <a href="javascript:;" class="btn btn-large" @click="orderSubmit">去结算</a>
+            <a href="javascript:void(0)" @click="backToCart" class="btn btn-default btn-large">返回购物车</a>
+            <a href="javascript:void(0)" @click="orderSubmit" class="btn btn-large" >去结算</a>
           </div>
         </div>
       </div>
@@ -154,6 +159,7 @@
 import Modal from './../components/Modal'
 import OrderHeader from './../components/OrderHeader'
 import Distpicker from 'v-distpicker'
+import Vue from 'vue'
 export default {
   name: 'order-confirm',
   components: {
@@ -163,6 +169,7 @@ export default {
   },
   data () {
     return {
+      remark:'',
       checkList:[],
       imgPath:"http://localhost:8082/res/",
       list: [], // 收货地址列表
@@ -179,9 +186,9 @@ export default {
     }
   },
   mounted () {
-    this.getAddressList()
+    this.getAddressList();
     this.checkList=this.$route.query.list;
-    this.getCartList()
+    this.getCartList();
   },
   methods: {
     backToCart(){
@@ -293,6 +300,30 @@ export default {
     // 订单提交
     orderSubmit () {
       console.log(this.cartList);
+      console.log(this.cartTotalPrice);
+      var order = {
+        cost: this.cartTotalPrice,
+        remark: this.remark,
+        orderDetailsList:[]
+      };
+      //TODO
+      for(var foodItem of this.cartList){
+        order.orderDetailsList.push({
+          foodid: foodItem.fid,
+          amount: foodItem.fnum
+        });
+      }
+      console.log(order);
+      Vue.axios.post(`http://localhost:8082/order/addOrder`, order).then(rs=>{
+        console.log(rs.data);
+        if(rs.data.status){
+          this.$message.success("结算完成");
+          this.$router.push("/clientCenter/myOrders");
+        }else{
+          this.$message.error(rs.data.msg);
+        }
+
+      });
       // const item = this.list[this.checkIndex]
       // if (!item) {
       //   this.$message.error('请选择一个收货地址')

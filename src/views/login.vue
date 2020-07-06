@@ -5,6 +5,9 @@
     </div> -->
     <div class="wrapper">
       <div class="container">
+        <div class="logo">
+          <img style="width: 500px;" height="500px" src="../../public/imgs/logo.jpg" />
+        </div>
         <div class="login-form">
           <h3>
             <span class="checked">帐号登录</span><span class="sep-line">|</span><span>扫码登录</span>
@@ -85,6 +88,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .logo{
+    flex: 1;
+    padding-left: 100px;
+  }
 .login{
   &>.container{
     height:113px;
@@ -95,10 +102,16 @@ export default {
   }
   .wrapper{
     position: relative;
-    background:url('/imgs/login-bg.jpg') no-repeat center;
     .container{
+      opacity: 0.9;
       height:576px;
+      display: flex;
+
+
+
+
       .login-form{
+        flex:1 ;
         box-sizing: border-box;
         padding-left: 31px;
         padding-right: 31px;

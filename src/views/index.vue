@@ -1,25 +1,28 @@
 <template>
   <div class="index">
+    <div class="swiperbox">
+      <div class="search bar">
+          <form>
+              <input placeholder="css搜索框代码测试" name="cname" type="text">
+              <button type="submit"></button>
+          </form>
+      </div>
+      
+        <div class="swiper-box">
+          <swiper :options="swiperOption">
+            <swiper-slide v-for="(item,index) in slideList" :key="index">
+              <a :href="'/#/product/'+item.id"><img :src="item.img"></a>
+            </swiper-slide>
+            <!-- Optional controls -->
+            <div class="swiper-pagination"  slot="pagination"></div>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </swiper>
+        </div>
+    </div>
     <div class="container">
 
-		<div class="search bar">
-		    <form>
-		        <input placeholder="css搜索框代码测试" name="cname" type="text">
-		        <button type="submit"></button>
-		    </form>
-		</div>
-
-      <div class="swiper-box">
-        <swiper :options="swiperOption">
-          <swiper-slide v-for="(item,index) in slideList" :key="index">
-            <a :href="'/#/product/'+item.id"><img :src="item.img"></a>
-          </swiper-slide>
-          <!-- Optional controls -->
-          <div class="swiper-pagination"  slot="pagination"></div>
-          <div class="swiper-button-prev" slot="button-prev"></div>
-          <div class="swiper-button-next" slot="button-next"></div>
-        </swiper>
-      </div>
+		
 
       <FoodDisplay></FoodDisplay>
 

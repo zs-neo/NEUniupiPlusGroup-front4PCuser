@@ -70,8 +70,8 @@
       caclDiscount(){
         let result = 0;
         for( let i = 0;i<this.orderItem.length;i++){
-          let item = this.orderItem[i];
-          result+= item.fcost*(1-item.fdiscount)*item.amount;
+          let item = this.orderItem[i].food;
+          result+= item.fprice*(1-item.fdiscount)*(this.orderItem[i].amount);
         }
         this.total_discount = result.toFixed(2);
       }
@@ -79,6 +79,7 @@
     created() {
       this.orderInfo = JSON.parse(sessionStorage.getItem('entryDetailsOrderInfo'));
       console.log(JSON.parse(sessionStorage.getItem('entryDetailsOrderInfo')));
+      this.orderItem = this.orderInfo.orderDetailsList;
       this.caclDiscount();
     }
   }

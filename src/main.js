@@ -70,11 +70,11 @@ axios.interceptors.response.use(function (response) {
 }, (error) => {
   return Promise.reject(error);
 })
-Vue.use(VueAxios, axios);
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 axios.defaults.withCredentials = true;
-
+Vue.use(VueAxios, axios);
 
 
 

@@ -69,6 +69,7 @@
 </template>
 
 <script scoped>
+  import Vue from 'vue'
   export default{
     data(){
       return{
@@ -118,13 +119,25 @@
         search: ''
       }
     },
+    created() {
+      this.getOrder();
+    },
     methods:{
+      getOrder(){
+        Vue.axios.post(`http://localhost:8082/order/getById`).then(rs=>{
+          if(rs.data.status){
+            this.tableData = rs.data.list;
+          }else{
+            this.$message.error(rs.data.msg);
+          }
+        });
+      },
       againOrder(index, row) {
         console.log(index, row);
       },
       checkDetails(index, row){
         console.log(index, row);
-        sessionStorage.setItem("entryDetailsOrderInfo",JSON.stringify(row));
+        sessionStorage.setItem("entryDetailsOrderInfo",JSON.stringify(this.tableData[index]));
         this.$router.push("/orderDetails");
       },
       handleDelete(index, row) {

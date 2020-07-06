@@ -1,8 +1,8 @@
 <template>
     <div class="footer">
       <div class="footer-logo">
-        <img src="/imgs/logo-footer.png" alt="">
-        <p>秘制小厨房</p>
+        <img src="/imgs/logo.jpg" alt="">
+        <p>五凤楼</p>
       </div>
       <div class="footer-link">
         <a target="_blank">Secret Kitchen</a><span>|</span>
@@ -33,8 +33,8 @@ export default {
       margin-top:46px;
       margin-bottom:31px;
       img{
-        width:53px;
-        height:36px;
+        width:50;
+        height:50px;
         margin-bottom:13px;
       }
     }

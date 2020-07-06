@@ -2,20 +2,20 @@
   <div class="orderItem">
     <div class="content">
       <div class="imgArea" align="center">
-        <img :src="this.itemInfo.fpic" />
+        <img :src="calcPic(this.itemInfo.food.fpic)" />
       </div>
       <div class="infoArea">
         <div class="infoContent">
-          <div><span style="font-size: 18px;font-weight: 800;font-family:'Courier New', Courier, monospace;">{{this.itemInfo.fname}}</span></div>
+          <div><span style="font-size: 18px;font-weight: 800;font-family:'Courier New', Courier, monospace;">{{this.itemInfo.food.fname}}</span></div>
           <div style="color: #666666;"><span style="padding-right: 20px; font-size: 13px;">数量</span><span style="padding-right: 15px; color: green;">{{this.itemInfo.amount}} </span><span style="font-size: 13px;">例</span></div>
           <div><span style="padding-right: 20px;color: #666666;">
-             <Tag v-show='this.itemInfo.fdiscount==1' color="volcano">未参与活动</Tag>
-             <Tag v-show='this.itemInfo.fdiscount<1' color="volcano">限时活动</Tag></span>
+             <Tag v-show='this.itemInfo.food.fdiscount==1' color="volcano">未参与活动</Tag>
+             <Tag v-show='this.itemInfo.food.fdiscount<1' color="volcano">限时活动</Tag></span>
            </div>
          </div>
          <div class="priceContent">
-             <div style="color: #ED4014;"><span>￥</span><span style="font-size: 18px;">{{this.itemInfo.fcost*this.itemInfo.fdiscount}}</span></div>
-             <div v-if="this.itemInfo.fdiscount<1"><span class="price"><del>￥{{this.itemInfo.fcost}}</del></span></div>
+             <div style="color: #ED4014;"><span>￥</span><span style="font-size: 18px;">{{this.itemInfo.food.fprice*this.itemInfo.food.fdiscount}}</span></div>
+             <div v-if="this.itemInfo.food.fdiscount<1"><span class="price"><del>￥{{this.itemInfo.food.fprice}}</del></span></div>
          </div>
       </div>
     </div>
@@ -32,6 +32,11 @@
     },
     created() {
       console.log(this.itemInfo);
+    },
+    methods:{
+      calcPic(pic){
+        return "/imgs/food/"+pic;
+      }
     }
   }
 </script>
