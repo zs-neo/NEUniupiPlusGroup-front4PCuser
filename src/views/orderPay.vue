@@ -19,7 +19,7 @@
             </div>
           </div>
           <div class="item-detail" v-if="showDetail">
-            <el-card v-if="orderInfo.userAddressId !== undefined" class="addressArea">
+            <el-card v-if="orderInfo.userAddressId !== undefined && orderInfo.userAddressId !==-1" class="addressArea">
               <div slot="header" class="addressAreaTitle">
                 配送信息
               </div>
@@ -50,7 +50,7 @@
               </div>
 
               <!-- 电话  备注 -->
-              <div class="item good">
+              <div v-if="discountprice!==0" class="item good">
                 <div class="detail-title">折扣减免</div>
                 <div class="detail-info" style="color: red; font-weight: 900; ">
                   {{discountprice}}
@@ -104,7 +104,7 @@ export default {
   data () {
     return {
       orderId: this.$route.query.orderNo,
-      orderInfo: '',
+      orderInfo: {cost:100},
       deliverAddress: '',
       addressInfo: '', // 收货人地址
       orderDetail: [], // 订单详情，包含选中需支付的商品列表
@@ -124,10 +124,34 @@ export default {
     Modal
   },
   created() {
-    console.log(JSON.parse(sessionStorage.getItem("orderConfirmInfo")));
-    this.orderInfo = JSON.parse(sessionStorage.getItem("orderConfirmInfo"));
-    this.deliverAddress = JSON.parse(sessionStorage.getItem("deliverAddress"));
-    this.discountprice = sessionStorage.getItem("discountprice");
+    if(sessionStorage.getItem("orderConfirmInfo")!== null){
+      this.orderInfo = JSON.parse(sessionStorage.getItem("orderConfirmInfo"));
+      console.log(this.orderInfo);
+      this.deliverAddress = JSON.parse(sessionStorage.getItem("deliverAddress"));
+      this.discountprice = sessionStorage.getItem("discountprice");
+    }else{
+      this.axios.get(`http://localhost:8082/order/getOrderBySerialNum`, {params:{
+        serialnum: this.$route.query.orderNo,
+      }}).then(rs=>{
+        if(rs.data.status){
+          this.orderInfo = rs.data.order;
+          if(rs.data.order.userAddressId!==null){
+            this.axios.get(`http://localhost:8082/userAddress/getAddressById`, {params:{
+              addressid:rs.data.order.userAddressId
+            }}).then(rs=>{
+              if(rs.data.status){
+                this.deliverAddress = rs.data.address;
+              }else{
+                this.$message.error(rs.data.msg);
+              }
+            })
+          }
+        }else{
+          this.$message.error(rs.data.msg);
+        }
+      })
+    }
+
     console.log(this.deliverAddress);
     console.log(this.orderInfo);
   },
@@ -155,7 +179,7 @@ export default {
              this.$message.error(rs.data.msg);
            }
          });
-      
+
        }, 1000)
         })
         .catch(() => {

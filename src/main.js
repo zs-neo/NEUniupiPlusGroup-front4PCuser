@@ -18,7 +18,38 @@ Vue.use(iView);
  * import env from './env'
  * axios.defaults.baseURL = env.baseURL
  */
+import { Loading } from 'element-ui';
+var loadingInstance;
+axios.interceptors.request.use(function(request){
+	console.log("我在main.js中loading......")
+	 loadingInstance = Loading.service({text: '加载中'});
+	 return request;
+	});
+	//错误收不到response
+axios.interceptors.response.use(function (response) {
+	loadingInstance.close();
+	console.log("我是main.js中的前端过滤器，axios回来了，close loading......");
+	// if(undefined == response.data.isLogin || response.data.isLogin){
+		return response;
+	// }else{
+	// 	console.log()
+	// 	if(undefined != response.data.msg){
+	// 		Vue.prototype.$message.error(response.data.msg);
+	// 	}else{
+	// 		Vue.prototype.$message.error("会话超时，请重新登录...");
 
+	// 	}
+
+	// 	sessionStorage.clear();
+	// 	router.push("/");
+	// }
+
+
+}, err => {
+	console.log("我在main.js中发现错误，close loading......");
+	loadingInstance.close();
+	return Promise.reject(err);
+});
 /**
  * - 根据环境变量获取不同的请求地址[方式二]: 代理跨越,则不用env.js,直接修改vue.config.js和axios.defaults.baseURL = '/api'
  * 根据前端的跨域方式做调整 /pro/b : /api/pro/b => /pro/b

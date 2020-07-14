@@ -27,8 +27,9 @@
       </el-table-column>
       <el-table-column label="操作" width="120px" align="center">
         <template slot-scope="scope">
+           <div v-if="scope.row.valid===1 && (scope.row.state===0 || scope.row.state===1)" class="remakeEntry" @click="refund(scope.$index, scope.row)" style="padding-right: 10px; color: red"><span>退款</span></div>
           <div v-if="caclState(scope.row)==='未支付'" class="remakeEntry" @click="pay(scope.$index, scope.row)" style="padding-right: 10px; color: red"><span>去支付</span></div>
-          <div class="remakeEntry" @click="remake(scope.$index, scope.row)"><span>评价</span></div>
+          <div v-if="scope.row.state===2&&scoped.row.state!==4" class="remakeEntry" @click="remake(scope.$index, scope.row)"><span>评价</span></div>
           <el-divider></el-divider>
           <el-button size="mini" @click="againOrder(scope.$index, scope.row)">再来一单</el-button>
         </template>
@@ -76,6 +77,7 @@
           }
         });
       },
+
       caclPoints(cost) {
         let user = JSON.parse(sessionStorage.getItem("user"));
         if (user.type === 0) {
@@ -93,31 +95,85 @@
         }
 
       },
+      /*
+      再来一单
+      */
       againOrder(index, row) {
         console.log(index, row);
-        for (let i = 0; i < row.orderDetailsList.length; i++) {
-          let food = row.orderDetailsList[i].food;
-          food.fnum = row.orderDetailsList[i].amount;
-          // console.log(food);
-          this.axios.post("http://localhost:8082/cart/insertCart", food).then(r => {
-            this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d => {
-              this.$store.dispatch("saveCartCount", d.data);
-            })
+        this.axios.get(`http://localhost:8082/cart/clearCart`).then(rs=>{
+          for (let i = 0; i < row.orderDetailsList.length; i++) {
+            let food = row.orderDetailsList[i].food;
+            food.fnum = row.orderDetailsList[i].amount;
+            console.log(food);
+            this.axios.post("http://localhost:8082/cart/insertCart", food).then(r => {
+              this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d => {
+                this.$store.dispatch("saveCartCount", d.data);
+              })
 
-          })
-        }
+            })
+          }
+        })
         this.$Message.success('已添加至购物车');
         this.$router.push("/cart");
       },
+      refund(index, row){
+        console.log("----------This is the top line of refund----------")
+        console.log(row.serialnum);
+        this.$confirm('确认退货？','提示',{type:'warning'}).then(()=>{
+          this.axios.get(`http://localhost:8082/order/applyRefund`, {params:{
+            serialnum: row.serialnum
+          }}).then(rs=>{
+            if(rs.data.status){
+              this.$message.success("申请退款成功，请等待商家同意...");
+              this.getOrder();
+            }else{
+                this.$message.error(rs.data.msg);
+            }
+          })
+        }).catch(()=>{
+          this.$message.info("已取消");
+        })
+
+        console.log("----------This is the bottom line of refund----------")
+      },
+      /*
+        订单详情
+      */
       checkDetails(index, row) {
         console.log(index, row);
         sessionStorage.setItem("entryDetailsOrderInfo", JSON.stringify(this.tableData[index]));
-        this.$router.push({name: "/orderDetails", query:{orderNo: row.serialnum}});
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
+        this.$router.push({
+          path: '/orderDetails',
+          query: {
+            orderNo: row.serialnum
+          }
+        });
       },
 
+      /*
+        订单删除
+      */
+      handleDelete(index, row) {
+        console.log(index, row);
+        this.$confirm("此次操作将不可撤销，是否继续？", "警告", {type:'warning'}).then(()=>{
+          this.axios.get(`http://localhost:8082/order/delete`, {params:{
+            serialnum: row.serialnum
+          }}).then(rs=>{
+            if(rs.data.status){
+              this.$Message.success("删除成功");
+              this.getOrder();
+            }else{
+              this.$message.error(rs.data.msg);
+            }
+          })
+        }).catch(()=>{
+          this.$message.info("已取消");
+        });
+
+      },
+      /*
+      订单过滤
+       */
       filterOrder() {
         let filterState = this.$route.query.filterState;
         let filterTime = this.$route.query.filterTime;
@@ -175,7 +231,12 @@
         });
         this.tableData = tableData;
       },
-      pay(row) {
+      /*
+        未支付订单去支付
+
+      */
+      pay(index, row) {
+        console.log(row);
         this.$router.push({
           path: '/order/pay',
           query: {
@@ -204,6 +265,9 @@
             case 3:
               return '已退款';
               break;
+             case 7:
+               return '退款中';
+               break;
             default:
               return '数据异常';
           }

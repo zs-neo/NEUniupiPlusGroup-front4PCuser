@@ -17,7 +17,7 @@
             <li class="col-1">小计</li>
             <li class="col-1">操作</li>
           </ul>
-          <ul class="cart-item-list">
+          <ul v-if="flashTable" class="cart-item-list">
             <NoDataForCart v-if="list.length===0"></NoDataForCart>
             <li class="cart-item" v-for="(item,index) in list" :key="index">
               <div class="col-1 item-check">
@@ -82,6 +82,7 @@ export default {
       checkedNum: 0,// 选中商品数量
       checkList:[],//选中框
       ischeckAll:false,
+      flashTable: true
     }
   },
   mounted () {
@@ -102,6 +103,13 @@ export default {
         this.ischeckAll = true;
       }else{
         this.ischeckAll = false;
+      }
+    },
+    list(newVal){
+      if(newVal.length>0){
+        this.flashTable =false;       
+        this.list = newVal
+        this.flashTable = true;
       }
     }
   },
