@@ -3,11 +3,11 @@
 module.exports = {
   pwa: {
     iconPaths: {
-      favicon32: 'my-webico.png',
-      favicon16: 'my-webico.png',
-      appleTouchIcon: 'my-webico.png',
-      maskIcon: 'my-webico.png',
-      msTileImage: 'my-webico.png'
+      favicon32: 'logo-icon.jpg',
+      favicon16: 'logo-icon.jpg',
+      appleTouchIcon: 'logo-icon.jpg',
+      maskIcon: 'logo-icon.jpg',
+      msTileImage: 'logo-icon.jpg'
     }
   },
   devServer: {

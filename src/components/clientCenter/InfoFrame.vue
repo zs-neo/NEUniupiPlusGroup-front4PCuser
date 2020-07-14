@@ -9,7 +9,7 @@
     </div>
     <div class="mainInfoArea">
       <div><span class="title">用户名</span><span class="col">{{userinfo.username}}</span></div>
-      <div><span class="title">小厨点</span><span class="col">{{userinfo.scores}}</span></div>
+      <div><span class="title">小厨点</span><span class="col">{{parseInt(userinfo.scores)}}</span></div>
       <div><span class="title">会员类型</span><span :style="userinfo.type==1?memberStyle:comStyle" class="col">{{userinfo.type==0?'普通用户':'尊贵会员'}}</span></div>
       <div><span class="title">认证时间</span><span class="col">{{userinfo.member.certificationdate}}</span></div>
 
@@ -22,7 +22,7 @@
     data(){
       return{
         userinfo:{},
-        memberStyle: 'color: red;',
+        memberStyle: 'color: #ffa7ca;',
         comStyle: 'color: #666;',
         rank:'',
         iconMember: 'background-color: gold',
@@ -89,9 +89,9 @@
      font-family: '\5b8b\4f53';
      font-size: 13px;
      font-weight: 500;
-     color: #666666;
+     color: #595959;
     display: inline-block;
-    background-color: #999999;
+    /* background-color: #999999; */
     width: 60%;
     height: 100%;
     padding: 10px;

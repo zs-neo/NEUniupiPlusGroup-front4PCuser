@@ -29,12 +29,15 @@ export default {
 
 <style lang="scss">
   .order-header{
-    padding:30px 0;
+    padding:15px 0;
     border-bottom:2px solid #FF6600;
     .header-logo{
       float:left;
     }
-    .title,.username{
+    .clearfix{
+      margin: 0px 15px;
+    }
+    .title .username{
       display:inline-block;
       height:55px;
       line-height:55px;

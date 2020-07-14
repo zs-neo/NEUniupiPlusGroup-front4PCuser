@@ -1,44 +1,48 @@
 <template>
   <div class="index">
+    <logo></logo>
     <div class="product-box">
       <div class="container">
-        <h2>会员积分兑换红包</h2>
+
         <div class="wrapper">
 
           <div class="card">
-            <img src="../../../public/imgs/userhead.jpg" alt="Avatar" style="width:60%;margin-left:15%" >
+            <img :src="imgurl" alt="Avatar" style="width:60%;margin-left:15%" >
             <div class="container" v-if="user.type==0" >
-             <p class="userinfo" style="padding-top: 30px;">用户名：{{user.username}}</p>
-             <p class="userinfo">用户类型：普通用户</p>
-             <p class="userinfo">会员等级：青铜</p>
-             <p class="userinfo">累计积分：{{user.scores}}点</p>
-             <p class="userinfo">当前可用积分：{{user.scores}}点</p>
-                <i-button type="success" style="width: 13%;font-weight: bold;font-size: 18px;">点我开通会员</i-button>
+             <p class="userinfo" style="padding-top: 30px;">用户名：<span class="userinfo1">{{user.username}}</span> </p>
+             <p class="userinfo">用户类型：<span class="userinfo1">普通用户</span> </p>
+             <p class="userinfo">会员等级：<span class="userinfo1">无</span></p>
+             <p class="userinfo">累计积分：<span class="userinfo1">{{parseInt(user.scores)}}点</span></p>
+             <p class="userinfo" >当前可用积分：<span class="userinfo1">0点</span></p>
+                <i-button type="error" shape="circle"style="width: 13%;font-weight: bold;font-size: 18px;margin: 13px">点我开通会员</i-button>
             </div>
 
             <div class="container" v-if="user.type==1" >
-             <p class="userinfo" style="padding-top: 30px;">用户名：{{user.username}}</p>
-             <p class="userinfo">用户类型：vip用户</p>
-             <p class="userinfo">会员等级：王者</p>
-               <p class="userinfo">认证时间：{{member.certificationdate}}</p>
-             <p class="userinfo">累计积分：{{member.accumulatescores}}点</p>
-             <p class="userinfo">当前可用积分：{{member.scores}}点</p>
+             <p class="userinfo" style="padding-top: 30px;">用户名：<span class="userinfo1">{{user.username}}</span></p>
+             <p class="userinfo">用户类型：<span class="userinfo1">vip用户</span></p>
+             <p class="userinfo">会员等级：<el-tag   type="danger"class="userinfo1">{{viplevel}}</el-tag></p>
+             <p class="userinfo">认证时间：<span class="userinfo1">{{member.certificationdate}}</span></p>
+             <p class="userinfo">累计积分：<span  class="userinfo1">{{parseInt(member.accumulatescores)}}点</span></p>
+             <p class="userinfo">当前可用积分：<span class="userinfo1">{{parseInt(user.scores)}}点</span></p>
+                <i-button type="primary" shape="circle"style="width: 13%;font-weight: bold;font-size: 18px;margin: 13px"@click="ShowDetail">查看兑换记录</i-button>
 
             </div>
+              <i-button type="success" shape="circle"style=";font-weight: bold;font-size: 18px;margin: 13px;"@click="toMycoupon">查看我的优惠券</i-button>
           </div>
 
           <div class="list-box1">
-            <div class="list" v-for="(arr,i) in redPackets" :key="i">
+            <div class="list" v-for="(arr,i) in redPackets" :key="i" >
               <div class="hongbao" v-for="(item,j) in arr" :key="j">
                   <div class="red-packet">
                       <header>
-                          <img src="../../../public/imgs/userhead.jpg"/>
+                          <img src="../../../public/imgs/logo.jpg"/>
                       </header>
                       <main>
                           <h1>{{item.rpmoney}}元无门槛</h1>
                           <p class="score">{{item.needscore}}积分</p>
-                          <p class="author">秘制小厨房敬上</p>
-                          <button class="open" @click="exchange(item)">兑换</button>
+                          <p class="author">五凤楼敬上</p>
+                          <button :class="buttonStyle(item.rpid)"ref="redbut" @click="exchange($event,item)">{{buttext[item.rpid]}}</button>
+
                       </main>
                   </div>
 
@@ -48,35 +52,43 @@
         </div>
       </div>
 
-    </div>
-    <div class="container">
-      <div class="ads-box">
-        <div class="main-module module-help" id="beanHelp">
-        					<div class="help-title">会员积分使用常见问题</div>
-        					<dl class="bean-help-list">
-        						<dt>1.积分和红包的有效期</dt>
-        						<dd>积分的有效期最长2年，最短1年，即从获得积分开始至次年年底，逾期自动作废（如若交易在使用积分有效期之外发生退款，该部分积分不予退还；本页面红包自领取之日起一个月内有效。</dd>
-        						<dt>2. 积分的兑换比例</dt>
-        						<dd>积分和人民币兑换比例是10:1，即10个积分相当于人民币1元。</dd>
-        						<dt>3. 积分如何获取</dt>
-        						<dd>用户在秘制小厨房进行点餐、点餐后评价、晒单、交易满意度、移动端下单、指定区域在线支付等活动都可以获得积分。</dd>
-        					</dl>
-        					<div class="view-more"><a href="" class="ftc02">了解更多问题 &gt;</a></div>
-        				</div>
- </div>
 
     </div>
+
+
+
+    <el-dialog title="积分消费明细" :visible.sync="dialogTableVisible" >
+      <el-table :data="scoresDetail" max-height="400px"  >
+         <el-table-column label="用户名" width="100">{{user.username}}</el-table-column>
+        <el-table-column property="updateamount" label="积分" width="80">
+          <template slot-scope="scope">
+            {{scope.row.updateamount.toFixed(2)}}
+          </template>
+        </el-table-column>
+        <el-table-column property="updatetime" label="时间" width="180"></el-table-column>
+        <el-table-column property="description" label="说明"></el-table-column>
+      </el-table>
+        <el-button type="primary" style="margin-left: 88%;"@click="shutdown" >确定</el-button>
+    </el-dialog>
+
+
+   <ScoreCenterFooter></ScoreCenterFooter>
 
 
   </div>
 </template>
 <script>
-
-let server="http://localhost:8082/";
-let getAll="redpacket/getAll";
-let getMember="member/getMember";
-
-
+    import logo from "./ScoreCenterLogo.vue"
+    import ScoreCenterFooter from "./ScoreCenterFoot.vue"
+    let server="http://localhost:8082/";
+    let getAll="redpacket/getAll";
+    let getMember="member/getMember";
+    let insert ="redpacketreceive/insert";
+    let updateScores="member/updateScores";
+    let getByClientId="redpacketreceive/getByClientId";
+    let uodateMemberDetail="memberdetail/insert";
+    let getClient="client/getClient";
+    let getHistory="memberdetail/getByClientid";//查看兑换记录
 export default {
   name: 'index',
 
@@ -85,66 +97,221 @@ export default {
       redPackets:[],
       user:"",
       member:"",
+      alreadyRedPid:[],//存放已经领取的红包id
+      buttext:[],//button的文字
+      viplevel:"",//会员等级
+      dialogTableVisible: false,
+      scoresDetail:[],
+      imgurl:"",
     }
+  },
+  components:{
+    ScoreCenterFooter,
+    logo,
   },
   created () {
     this.init();
+
   },
   methods: {
 
     //初始化拿红包数据
     init () {
-
        var userJsonStr = sessionStorage.getItem('user');
        this.user = JSON.parse(userJsonStr);
-
+       let img="res/"+this.user.icon;
+        this.imgurl=`${server}${img}`;
         this.axios.get(`${server}${getAll}`).then((res) => {
 
         this.redPackets = [res.data.slice(0, 4), res.data.slice(4, 8)]
       })
+      this.getClient();
       this.checkMember();
+      this.getRPByTime();
     },
+    //拿到当前用户信息
+    getClient(){
+      this.axios.get(`${server}${getClient}`,{params:{
+      			 clientid: this.user.clientid,
+       		}}).then((res) => {
+        console.log(res.data);
+        this.user=res.data;
+        if(res.data==""){
+            this.$Notice.error({
+              title: '参数错误',
+              desc: '获取个人信息失败！'
+          });
+        }
+      })
+
+    },
+
+    //根据用户是否领取过红包设定红包样式
+     buttonStyle(rpid){
+       if(this.user.type==1){
+       for(let i=0;i<this.alreadyRedPid.length;i++){
+         if(rpid==this.alreadyRedPid[i]){
+           this.buttext[rpid]="已兑换";
+           return "alreadyopen";
+         }else{
+           this.buttext[rpid]="兑换";
+         }
+       }
+        return "open";
+        }else{
+          this.buttext[rpid]="兑换"
+          return "open";
+        }
+     },
+
     //点击兑换
-    exchange(item){
-       console.log(item);
+    exchange(event,item){
+       console.log();
       if(this.user.type==0){
         this.$message.warning("对不起，您不可兑换，请先开通会员！")
       }else{
+
+        if(event.target.innerText=="已兑换"){
+           this.$message.warning("对不起，您本周期内已经兑换过该红包，请两周后再兑换！")
+        }else{
          let needscore=item.needscore;
-         let nowscore=this.member.scores;
+         let nowscore=this.user.scores;
          if(needscore>nowscore){
            this.$message.error("对不起，您的积分不足，无法兑换");
          }else{
+            this.$Modal.confirm({
+                     title: '兑换红包',
+                     content: "您确定要消耗"+needscore+"积分兑换该红包么?",
+                     onOk: () => {
+                       let insertmsg={//新增红包兑换记录
+                          "clientid":this.member.clientid,
+                          "rpid":item.rpid,
+                          "createtime":this.getNowFormatDate(),
+                       };
+                      this.axios.post(`${server}${insert}`,JSON.stringify(insertmsg),{
+                                  headers: {
+                                    'content-Type':'application/json',
+                                  },
+                                }).then((res) => {
+                        console.log(res.data);
+                        if(res.data.insertmsg){
+                            this.updateScores(needscore);
+                            this.uodateMemberDetail(needscore,item);
+                            this.$message.success("兑换成功，请到我的优惠卷中查看！");
+                            this.init();
+                        }else{
+                          this.$Notice.error({
+                              title: '内部错误',
+                              desc: '兑换失败！'
+                          });
+                        }
+                      })
 
-
-
-           if(confirm("您确定消耗一定积分兑换该红包么？")){
-             
-             
-
-
-             this.$message.success("兑换成功，请到我的优惠卷中查看！");
-           }
-
-
+                     },
+                     onCancel: () => {
+                         this.$Message.info('点击了取消');
+                     }
+                 });
          }
-
+         }
       }
-
-
-
-
-
-
-
-
-
-
-
-
+    },
+    //兑换结束之后修改会员当前可用积分
+    updateScores(costScores){
+      let finalscores=this.user.scores-costScores;
+      console.log("finalscore"+this.member.clientid);
+          this.axios.get(`${server}${updateScores}`,{params:{
+        				 clientid: this.member.clientid,
+                 scores:finalscores,
+        	 		}}).then((res) => {
+            this.user.scores=finalscores;
+            console.log(res.data);
+            if(!res.data.updateScores){
+                this.$Notice.error({
+                  title: '参数错误',
+                  desc: '修改会员积分失败！'
+              });
+            }
+          })
+    },
+    //兑换成功后生成一条积分变动信息
+    uodateMemberDetail(costScores,redpacket){
+      let memberdetail={//新增积分更新记录
+         "clientid":this.member.clientid,
+         "updateamount":costScores*-1,
+         "description":"兑换"+redpacket.rpmoney+"元无门槛红包，消耗"+costScores+"积分",
+         "updatetime":this.getNowFormatDate(),
+      };
+      this.axios.post(`${server}${uodateMemberDetail}`,JSON.stringify(memberdetail),{
+                    headers: {
+                      'content-Type':'application/json',
+                    },
+                  }).then((res) => {
+        console.log("新增积分消费记录"+res.data);
+        if(!res.data.insertmsg){
+            this.$Notice.error({
+              title: '参数错误',
+              desc: '新增会员积分明细记录失败！'
+          });
+        }
+      })
 
 
     },
+    //拿到当前用户两周之内的红包领取信息(id)。用于判断是否更新红包
+    getRPByTime(){
+      if(this.user.type==0){//首先判断是否是会员
+        return;
+      }else{//是会员
+        this.axios.get(`${server}${getByClientId}`,{params:{
+        			 clientid: this.user.clientid,
+         		}}).then((res) => {
+          if(res.data.getmsg){
+            this.alreadyRedPid=res.data.rpids;
+            console.log(res.data.rpids);
+
+          }
+
+        })
+      }
+
+
+    },
+
+      //  获取当前时间
+        getNowFormatDate: function () {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            //外国的月份都是从0开始的，所以+1
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            //1-9月用0补位
+            if(month >=1 && month <=9){
+                month = "0" + month;
+            }
+            //1-9日用0补位
+            if(strDate >=0 && strDate <= 9){
+                strDate = "0" + strDate;
+            }
+            //获取当前时间 yyyy-MM-dd HH:mm:ss
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " +date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+            return currentdate;
+        },
+     //判断会员等级的方法
+    checkviplevel(subscores){
+      if(subscores<=500){
+        return "黄金会员"
+      }
+      else if(500<subscores<1000){
+        return "白金会员";
+      }else {
+         return "钻石会员";
+      }
+
+    },
+
+
     //判断是否是会员如果是拿到会员信息
     checkMember(){
       let usertype=this.user.type
@@ -161,6 +328,7 @@ export default {
                  var time = timeArr[0]+'-'+timeArr[1]+'-'+timeArr[2];
                  this.member=res.data.member;
                  this.member.certificationdate=time;
+                 this.viplevel=this.checkviplevel(this.member.accumulatescores);
               }else{
                 this.$Notice.error({
                     title: '参数错误',
@@ -176,10 +344,30 @@ export default {
          });
         }
     },
+    //点击查看兑换记录
+    ShowDetail(){
+      this.dialogTableVisible=true;
+      this.axios.get(`${server}${getHistory}`,{params:{
+      			 clientid: this.member.clientid,
+       		}}).then((res) => {
+        if(res.data.getmsg){
+          this.scoresDetail=res.data.memberDetails;
+          console.log(res.data);
 
+        }
+
+      })
+    },
+    //关闭弹出框
+    shutdown(){
+       this.dialogTableVisible=false;
+    },
+    //点击查看我的优惠卷
+    toMycoupon(){
+       this.$router.push(`/clientCenter/myCoupon`);
+    },
 
   },
-
 
 }
 </script>
@@ -188,23 +376,14 @@ export default {
   @import '../../assets/scss/mixin.scss';
   // @import '../../assets/css/scorecenter.css';
   .index{
-    .ads-box{
-      @include flex();
-      margin-top:14px;
-      margin-bottom:31px;
-      a{
-        width:296px;
-        height:167px;
 
-      }
-    }
 
     .banner{
       margin-bottom:50px;
     }
     .product-box{
-      background-color:$colorJ;
-      padding:20px 0 15px;
+     // background-color:$colorJ;
+      //padding:20px 0 10px;
       h2{
         font-size:$fontF;
         height:21px;
@@ -224,6 +403,7 @@ export default {
 
       }
       .list-box1{
+        padding: 5px;
         .list{
           @include flex();
           width:986px;
@@ -254,37 +434,17 @@ export default {
          }
     }
   }
-
-.bean-help-list {
-    line-height: 26px;
-    color: #333;
-}
-
-.bean-help-list dt {
-    font-weight: 700;
-}
-.bean-help-list dd {
-    margin-bottom: 14px;
-}
-
-.help-title {
-    height: 59px;
-    line-height: 59px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 18px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #1b1b1b;
-}
-.module-help {
-    margin-left:50px ;
-    font-family: "Helvetica Neue",sans-serif;
-    font-size: 14px;
-}
   .userinfo{
     margin-bottom: 30px;
     font-weight: bold;
+    font-family:"宋体";
 
+  }
+  .userinfo1{
+
+    font-weight: bold;
+    font-size: 16px;
+    font-family:"bodoni mt"
 
   }
 
@@ -350,6 +510,21 @@ export default {
       border-radius: 100%;
       transition: background .3s, transform .3s;
   }
+  .red-packet .alreadyopen{
+      outline: 0;
+      width: 3em;
+      height: 3em;
+      color: #550000;
+      border: none;
+      display: block;
+      font-size: 2em;
+      cursor: pointer;
+      margin: 1em auto;
+      margin-left: 80px;
+      background: #636363;
+      border-radius: 100%;
+      transition: background .3s, transform .3s;
+  }
   .red-packet .open:hover{
       transform: scale(1.1);
   }
@@ -370,11 +545,12 @@ export default {
 .card {
    font-family: "楷体";
     font-size: 18px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2);
     padding: 20px;
     transition: 0.3s;
     width: 20%;
     border-radius: 5px;
+    border:3px solid #fbe1e2
 }
 
 .card:hover {
@@ -386,6 +562,6 @@ img {
 }
 
 .container {
-    padding: 2px 16px ;
+    //padding: 2px 16px ;
 }
 </style>

@@ -63,7 +63,12 @@ export default {
       this.getCartCount()
     }
 	this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d=>{
-	  this.$store.dispatch("saveCartCount",d.data);
+    if(d.data.msg === undefined){
+      this.$store.dispatch("saveCartCount",d.data);
+    }else{
+      
+    }
+
 	})
   },
   methods: {

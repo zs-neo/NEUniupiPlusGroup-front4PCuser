@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <NavHeader></NavHeader>
     <router-view></router-view>
   </div>
@@ -13,3 +13,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .home{
+    width: inherit;
+    /* height: calc(100vh); */
+  }
+</style>

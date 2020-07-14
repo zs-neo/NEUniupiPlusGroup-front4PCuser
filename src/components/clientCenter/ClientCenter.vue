@@ -8,7 +8,7 @@
               订单中心
             </dt>
             <dd>
-              <router-link to="/clientCenter/myOrders"  active-class="a-active" exact><span>我的订单</span></router-link>
+              <router-link to="/clientCenter/myOrders"  active-class="a-active"><span>我的订单</span></router-link>
             </dd>
             <dd>
               <a>评价晒单</a>
@@ -21,7 +21,7 @@
                我的钱包
             </dt>
             <dd>
-              <router-link to="/clientCenter/myCoupon" active-class="a-active" exact><span>我的优惠卷</span></router-link>
+              <router-link to="/clientCenter/myCoupon" active-class="a-active" exact><span>我的优惠券</span></router-link>
             </dd>
             <dd>
              <router-link to="/couponCenter" active-class="a-active" exact><span>领劵中心</span></router-link>
@@ -43,9 +43,6 @@
             <dd>
              <router-link to="/clientCenter/myAddress"  active-class="a-active" exact><span>配送地址</span></router-link>
             </dd>
-            <dd>
-           <router-link to="/clientCenter/AddAddress"  active-class="a-active" exact><span>添加配送地址</span></router-link>
-            </dd>
           </dl>
           <dl>
             <dt>
@@ -62,7 +59,7 @@
         </div>
       </div>
       <div class="mainArea">
-        <router-view></router-view>
+        <router-view :key="this.$route.fullPath"></router-view>
       </div>
     </div>
   </div>
@@ -76,6 +73,7 @@
   .clientCenterPage{
     width: 100%;
     height: calc(100vh - 40px);
+    background-color: #F5F5F5;
   }
 
 
@@ -130,7 +128,7 @@
     width: 100px;
     height: 100%;
     margin-left: 10px;
-    background-color: #F0FAFF;
+    background-color: #FFFFFF;
   }
   .mainArea{
 /*    background-color: lightcoral; */

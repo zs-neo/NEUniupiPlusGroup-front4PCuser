@@ -59,8 +59,12 @@ export default {
       	if(rs.data!=""){
           console.log(rs.data);
       		sessionStorage.setItem("user",JSON.stringify(rs.data));
+           if(rs.data.type==1){
+              sessionStorage.setItem("isVip",true);
+            }else{
+              sessionStorage.setItem("isVip",false);
+            }
       		this.$router.push(
-
           {
       		  // path:'/index'对应路由起的name:index
       		  // 【注：用params传参必须使用name跳转路由；而用query传参必须使用path跳转路由】
@@ -89,10 +93,13 @@ export default {
 </script>
 <style lang="scss" scoped>
   .logo{
-    flex: 1;
-    padding-left: 100px;
+    flex: 3;
+    text-align: center;
+    box-sizing: border-box;
+    padding-right:150px;
   }
 .login{
+  height: calc(100vh);
   &>.container{
     height:113px;
     img{
@@ -101,26 +108,18 @@ export default {
     }
   }
   .wrapper{
+    padding: 5% 0px;
     position: relative;
     .container{
       opacity: 0.9;
       height:576px;
       display: flex;
 
-
-
-
       .login-form{
         flex:1 ;
         box-sizing: border-box;
-        padding-left: 31px;
-        padding-right: 31px;
-        width:410px;
-        height:510px;
+        padding: 50px 100px 50px 0;
         background-color:#ffffff;
-        position:absolute;
-        bottom:29px;
-        right:20px;
         h3{
           line-height:23px;
           font-size:24px;

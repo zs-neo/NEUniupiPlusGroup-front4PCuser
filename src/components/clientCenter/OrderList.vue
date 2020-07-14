@@ -1,67 +1,47 @@
 <template>
   <div class="orderList">
-    <el-table
-      :data="tableData.filter(data => !search || data.serialnum.toLowerCase().includes(search.toLowerCase()))"
-      max-heignt="550px"
-      style="width: 100%;
+    <el-table :data="tableData.filter(data => !search || data.serialnum.toLowerCase().includes(search.toLowerCase()))"
+      max-heignt="550px" ref="orderListTable" empty-text="你还没有订单，快点去订餐吧!" style="width: 100%;
       font-size: 14px;
       color: #666;
       font-family: '\5b8b\4f53';">
-      <el-table-column
-        label="订单号"
-        align="center"
-        prop="serialnum">
+      <el-table-column label="订单号" align="center" prop="serialnum">
       </el-table-column>
-      <el-table-column
-        label="日期"
-        prop="createdate"
-         align="center"
-        width="150px">
+      <el-table-column label="日期" prop="createdate" align="center" width="100px">
       </el-table-column>
-      <el-table-column
-        label="金额"
-         align="center"
-        width="100px"
-        prop="cost">
-      </el-table-column>
-      <el-table-column
-        label="积分"
-         align="center"
-        width="90px"
-        prop="memberpoints">
-      </el-table-column>
-      <el-table-column
-        label="状态"
-        width="110px"
-        align="center"
-        prop="state">
+      <el-table-column label="金额" align="center" width="100px" prop="cost">
         <template slot-scope="scope">
-        	<span>{{scope.row.state==1?'已完成':'已取消'}}</span>
+          <span style="color: #ff5500;">{{scope.row.cost}}</span>
+        </template>
+
+      </el-table-column>
+      <el-table-column label="积分" align="center" width="90px" prop="memberpoints">
+        <template slot-scope="scope">
+          <span style="color: #ff5500;">{{caclPoints(scope.row.cost)}}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="操作"
-        width="120px"
-        align="center">
+      <el-table-column label="状态" width="110px" align="center" prop="state">
         <template slot-scope="scope">
+          <span style="color: lightslategray; font-size: 13px;" :style="caclState(scope.row)!=='已失效'?validStyle:invalidStyle">{{caclState(scope.row)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="120px" align="center">
+        <template slot-scope="scope">
+          <div v-if="caclState(scope.row)==='未支付'" class="remakeEntry" @click="pay(scope.$index, scope.row)" style="padding-right: 10px; color: red"><span>去支付</span></div>
           <div class="remakeEntry" @click="remake(scope.$index, scope.row)"><span>评价</span></div>
           <el-divider></el-divider>
-          <el-button
-            size="mini"
-            @click="againOrder(scope.$index, scope.row)">再来一单</el-button>
+          <el-button size="mini" @click="againOrder(scope.$index, scope.row)">再来一单</el-button>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center">
+      <el-table-column align="center">
         <template slot="header" slot-scope="scope">
-          <el-input
-            v-model="search"
-            size="mini"
-            placeholder="输入订单号搜索"/>
+          <el-input v-model="search" size="mini" placeholder="输入订单号搜索" />
         </template>
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="checkDetails(scope.$index, scope.row)" icon="el-icon-edit-outline" circle></el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete" circle></el-button>
+          <el-button size="mini" type="primary" @click="checkDetails(scope.$index, scope.row)" icon="el-icon-edit-outline"
+            circle></el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete"
+            circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,96 +50,190 @@
 
 <script scoped>
   import Vue from 'vue'
-  export default{
-    data(){
-      return{
-        tableData: [{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },{
-          createdate: '2016-05-02 11:20:15',
-          name: '王小虎',
-          cost: 263.5,
-          serialnum: '1593521600750561',
-          state: 1,
-          memberpoints: 50,
-        },],
-        search: ''
+  export default {
+    data() {
+      return {
+        tableData: [],
+        search: '',
+        validStyle: "color: green",
+        invalidStyle: '',
       }
     },
     created() {
       this.getOrder();
     },
-    methods:{
-      getOrder(){
-        Vue.axios.post(`http://localhost:8082/order/getById`).then(rs=>{
-          if(rs.data.status){
+    computed: {
+
+    },
+    methods: {
+      getOrder() {
+        Vue.axios.post(`http://localhost:8082/order/getById`).then(rs => {
+          if (rs.data.status) {
             this.tableData = rs.data.list;
-          }else{
+            this.filterOrder();
+          } else {
             this.$message.error(rs.data.msg);
           }
         });
       },
+      caclPoints(cost) {
+        let user = JSON.parse(sessionStorage.getItem("user"));
+        if (user.type === 0) {
+          return (cost / 20).toFixed(2);
+        } else {
+          if (user.member.accumulatescores && user.member.accumulatescores != '') {
+            if (user.member.accumulatescores < 500) {
+              return (cost / 10).toFixed(2);
+            } else if (user.member.accumulatescores >= 500) {
+              return (cost * 10 / 1.5).toFixed(2);
+            } else if (user.member.accumulatescores >= 1000) {
+              return (cost / 5).toFixed(2)
+            }
+          }
+        }
+
+      },
       againOrder(index, row) {
         console.log(index, row);
+        for (let i = 0; i < row.orderDetailsList.length; i++) {
+          let food = row.orderDetailsList[i].food;
+          food.fnum = row.orderDetailsList[i].amount;
+          // console.log(food);
+          this.axios.post("http://localhost:8082/cart/insertCart", food).then(r => {
+            this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(d => {
+              this.$store.dispatch("saveCartCount", d.data);
+            })
+
+          })
+        }
+        this.$Message.success('已添加至购物车');
+        this.$router.push("/cart");
       },
-      checkDetails(index, row){
+      checkDetails(index, row) {
         console.log(index, row);
-        sessionStorage.setItem("entryDetailsOrderInfo",JSON.stringify(this.tableData[index]));
-        this.$router.push("/orderDetails");
+        sessionStorage.setItem("entryDetailsOrderInfo", JSON.stringify(this.tableData[index]));
+        this.$router.push({name: "/orderDetails", query:{orderNo: row.serialnum}});
       },
       handleDelete(index, row) {
         console.log(index, row);
-      }
+      },
+
+      filterOrder() {
+        let filterState = this.$route.query.filterState;
+        let filterTime = this.$route.query.filterTime;
+        let tableData = this.tableData;
+        console.log(tableData);
+        if (filterState !== undefined) {
+          /*
+            0 全部
+            1 未支付 且有效
+            2 未评价
+          */
+          if (filterState != 0) {
+            if (filterState == 1) {
+              let currdate = new Date();
+              tableData = tableData.filter((item, index, arr) => {
+                return item.valid == 0 && new Date(item.createdate) >= (currdate - 15 * 60 * 1000);
+              });
+            } else {
+              tableData = tableData.filter((item, index, arr) => {
+                return item.state == 2;
+              });
+            }
+
+          }
+
+          console.log('filterState ' + filterState);
+        }
+        if (filterTime !== undefined) {
+          /*
+            0 半年内
+            1 一年内
+            2 一年前
+          */
+          let currdate = new Date();
+
+          if (filterTime == 0) {
+            tableData = tableData.filter((item, index, arr) => {
+              return new Date(item.createdate) >= (currdate - 180 * 24 * 60 * 60 * 1000);
+            });
+          } else if (filterTime == 1) {
+            tableData = tableData.filter((item, index, arr) => {
+              return new Date(item.createdate) >= (currdate - 365 * 24 * 60 * 60 * 1000);
+            });
+
+          } else {
+            tableData = tableData.filter((item, index, arr) => {
+              return new Date(item.createdate) <= (currdate - 180 * 24 * 60 * 60 * 1000);
+            });
+
+          }
+          console.log('filterTime ' + filterTime);
+        }
+        tableData.sort((a, b) => {
+          return b.serialnum.substr(0, 8) - a.serialnum.substr(0, 8);
+        });
+        this.tableData = tableData;
+      },
+      pay(row) {
+        this.$router.push({
+          path: '/order/pay',
+          query: {
+            orderNo: row.serialnum
+          }
+        });
+      },
+      caclState(row) {
+        if (row.valid == 0) {
+          let currdate = new Date();
+          if (new Date(row.createdate) < (currdate - 15 * 60 * 1000)) {
+            return '已失效';
+          }
+          return '未支付';
+        } else {
+          switch (row.state) {
+            case 0:
+              return '未接单'
+              break;
+            case 1:
+              return '已接单';
+              break;
+            case 2:
+              return '已完成';
+              break;
+            case 3:
+              return '已退款';
+              break;
+            default:
+              return '数据异常';
+          }
+        }
+      },
+
     }
   }
 </script>
 
 <style scoped>
+  * {
+    font-weight: 900;
+  }
 
-  .remakeEntry{
+  .remakeEntry {
+    display: inline-block;
+    vertical-align: top;
     cursor: pointer;
     font-size: 12px;
     color: #666;
     font-family: '\5b8b\4f53';
   }
-  .remakeEntry:hover{
+
+  .remakeEntry:hover {
     color: #e4393c;
     text-decoration: underline;
   }
-  .el-divider--horizontal{
+
+  .el-divider--horizontal {
     margin: 10px 0px !important;
   }
 </style>

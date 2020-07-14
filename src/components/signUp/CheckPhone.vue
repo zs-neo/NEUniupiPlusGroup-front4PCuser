@@ -58,7 +58,7 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$router.push({ path: '/SignUp/inputInfo', query: { phone: this.formValidate.phone } });
-          this.SET_SIGN_UP_SETP(1);
+          this.$store.commit('SET_SIGN_UP_STEP', 1);
         } else {
           this.$Message.error({
             content: '请填写正确的信息',

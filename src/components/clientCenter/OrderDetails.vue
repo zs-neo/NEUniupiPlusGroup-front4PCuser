@@ -8,8 +8,8 @@
         <div>
             <div class="cbcol"><span class="cbcol-title">订单编号</span><span>{{orderInfo.serialnum}}</span></div>
             <div class="cbcol"><span class="cbcol-title">下单日期</span><span>{{orderInfo.createdate}}</span></div>
-            <div class="cbcol"><span class="cbcol-title">折扣优惠</span><span style="color: #E4393C;font-size: 14px;">-￥{{this.total_discount}}</span></div>
-            <div class="cbcol"><span class="cbcol-title">合计</span><span style="font-size: 16px; color: #E4393C;">￥{{orderInfo.cost}}</span></div>
+            <div class="cbcol"><span class="cbcol-title">折扣优惠</span><span style="color: #E4393C;font-size: 14px;">-<span style="font-size: 8px;">￥</span>{{this.total_discount}}</span></div>
+            <div class="cbcol"><span class="cbcol-title">合计</span><span style="font-size: 16px; color: #E4393C;"><span style="font-size: 8px;">￥</span>{{orderInfo.cost}}</span></div>
             <div class="cbcol"><span class="cbcol-title">订单备注</span><span>{{orderInfo.remake}}</span></div>
         </div>
       </el-card>
@@ -19,7 +19,7 @@
         </div>
         <div class="cbody">
           <template v-for="item of orderItem" >
-            <div class="aItem" style="padding: 10px;">
+            <div class="aItem">
               <OrderItem :itemInfo='item'></OrderItem>
             </div>
 
@@ -42,26 +42,7 @@
       return{
         orderInfo:{},
         orderItem:[
-           {
-          fpic: '/imgs/food/52da1ae8a9375.jpg',
-          fname: '虾皮萝卜丝汤',
-          fcost: 100,
-          fdiscount: 0.9,
-          amount: 10,
-          },{
-          fpic: '/imgs/food/52da147fc29fb.jpg',
-          fname: '虾皮萝卜丝汤',
-          fcost: 100,
-          fdiscount: 0.9,
-          amount: 10,
-          },{
-          fpic: '/imgs/food/52da147fc29fb.jpg',
-          fname: '虾皮萝卜丝汤',
-          fcost: 100,
-          fdiscount: 0.9,
-          amount: 10,
-          },
-
+          
         ],
         total_discount: 0,
       }
@@ -113,14 +94,20 @@
   }
   .cbcol{
     padding-bottom: 6px;
+    font-family: simsun;
+    font-weight: 900;
   }
   .cbcol-title{
     color: #666;
     padding-right: 20px;
+
+
+    font-size: 13px;
   }
   .aItem{
     height: 150px;
     box-sizing: border-box;
+    padding: 15px;
   }
   .cbody{
     height: 350px;

@@ -2,7 +2,6 @@
   <div class="order-pay">
     <order-header title="订单支付">
       <template v-slot:tip>
-        <span>请谨防钓鱼链接或诈骗电话</span>
       </template>
     </order-header>
     <div class="wrapper">
@@ -12,37 +11,58 @@
             <div class="icon-succ"></div>
             <div class="order-info">
               <h2>订单提交成功！去付款咯～</h2>
-              <p>请在<span>30分</span>内完成支付, 超时后将取消订单</p>
-              <p>收货信息：{{addressInfo}}</p>
+              <p>请在<span>15分钟</span>内完成支付, 超时后订单将失效</p>
             </div>
             <div class="order-total">
-              <p>应付总额：<span>{{payment}}</span>元</p>
+              <p>应付总额：<span>{{orderInfo.cost}}</span>元</p>
               <p>订单详情<em class="icon-down" :class="{'up':showDetail}" @click="showDetail=!showDetail"></em></p>
             </div>
           </div>
           <div class="item-detail" v-if="showDetail">
-            <div class="item">
-              <div class="detail-title">订单号：</div>
-              <div class="detail-info theme-color">{{orderId}}</div>
-            </div>
-            <div class="item">
-              <div class="detail-title">收货信息：</div>
-              <div class="detail-info">{{addressInfo}}</div>
-            </div>
-            <div class="item good">
-              <div class="detail-title">商品名称：</div>
-              <div class="detail-info">
-                <ul>
-                  <li v-for="(item,index) in orderDetail" :key="index">
-                    <img v-lazy="item.productImage"/>{{item.productName}}
-                  </li>
-                </ul>
+            <el-card v-if="orderInfo.userAddressId !== undefined" class="addressArea">
+              <div slot="header" class="addressAreaTitle">
+                配送信息
               </div>
-            </div>
-            <div class="item">
-              <div class="detail-title">发票信息：</div>
-              <div class="detail-info">电子发票 个人</div>
-            </div>
+              <div class="addressAreaContent">
+                <p>期望时间 <span>立即配送</span></p>
+                <p><div style="display: inline-block; vertical-align: top;">配送地址</div>&nbsp;
+                <div style="display: inline-block;">
+                  <span>
+                    {{deliverAddress.province+" "+deliverAddress.city+" "+deliverAddress.district+" "+deliverAddress.address}}
+                  </span><br/>
+                  <span>
+                    <span>{{deliverAddress.username}}</span>&nbsp;
+                    <span>{{deliverAddress.phone}}</span>
+                  </span>
+
+                 </div>
+                </p>
+                <p>配送服务 <span>商家配送</span></p>
+              </div>
+            </el-card>
+            <el-card class="orderArea">
+              <div slot="header" class="orderAreaHeader">
+                订单详情
+              </div>
+              <div class="item">
+                <div class="detail-title">订单号</div>
+                <div class="detail-info theme-color">{{orderId}}</div>
+              </div>
+
+              <!-- 电话  备注 -->
+              <div class="item good">
+                <div class="detail-title">折扣减免</div>
+                <div class="detail-info" style="color: red; font-weight: 900; ">
+                  {{discountprice}}
+                </div>
+                元
+              </div>
+              <div class="item">
+                <div class="detail-title">发票信息</div>
+                <div class="detail-info">电子发票 个人</div>
+              </div>
+            </el-card>
+
           </div>
         </div>
 
@@ -84,6 +104,8 @@ export default {
   data () {
     return {
       orderId: this.$route.query.orderNo,
+      orderInfo: '',
+      deliverAddress: '',
       addressInfo: '', // 收货人地址
       orderDetail: [], // 订单详情，包含选中需支付的商品列表
       showDetail: false, // 是否显示订单详情
@@ -92,6 +114,7 @@ export default {
       payImg: '', // 微信支付的二维码地址
       showPayModal: false, // 是否显示二次支付确认弹框
       payment: 0, // 订单总金额
+      discountprice: 0,
       T: ''// 定时器ID
     }
   },
@@ -100,41 +123,44 @@ export default {
     ScanPayCode,
     Modal
   },
+  created() {
+    console.log(JSON.parse(sessionStorage.getItem("orderConfirmInfo")));
+    this.orderInfo = JSON.parse(sessionStorage.getItem("orderConfirmInfo"));
+    this.deliverAddress = JSON.parse(sessionStorage.getItem("deliverAddress"));
+    this.discountprice = sessionStorage.getItem("discountprice");
+    console.log(this.deliverAddress);
+    console.log(this.orderInfo);
+  },
   mounted () {
-    this.getOrderDetail()
+
   },
   methods: {
-    getOrderDetail () {
-      this.axios.get(`/orders/${this.orderId}`).then((res) => {
-        const item = res.shippingVo
-        this.addressInfo = `${item.receiverName} ${item.receiverMobile} ${item.receiverProvince} ${item.receiverCity} ${item.receiverDistrict} ${item.receiverAddress}`
-        this.orderDetail = res.orderItemVoList
-        this.payment = res.payment
-      })
-    },
+
     paySubmit (payType) {
-      if (payType === 1) {
-        // 打开新窗口JS的形式：window.open('url','_blank')，html的形式可以是<a href='url'></a>
-        window.open('/#/order/alipay?orderId=' + this.orderId, '_blank')
-      } else {
-        this.axios.post('/pay', {
-          orderId: this.orderId,
-          orderName: 'Vue高仿小米商城',
-          amount: 0.01, // 单位元
-          payType: 2 // 1支付宝，2微信
-        }).then((res) => {
-          // 将res.content字符串内容（weixin://wxpay//bizpayurl?sr=XXX）转成base64的二维码图片，这里.then(url)参数就是转换后的图片
-          QRCode.toDataURL(res.content)
-            .then(url => {
-              this.showPay = true
-              this.payImg = url
-              this.loopOrderState()
-            })
-            .catch(() => {
-              this.$message.error('微信二维码生成失败，请稍后重试')
-            })
+      QRCode.toDataURL("weixin://wxpay/bizpayurl?pr=9ddfjRE")
+        .then(url => {
+          this.showPay = true
+          this.payImg = url
+          this.loopOrderState()
+       setTimeout(() => {
+         this.axios.get(`http://localhost:8082/order/pay`,{
+           params:{
+             serialnum: this.$route.query.orderNo
+           }
+         }).then(rs=>{
+           if(rs.data.status){
+             this.$message.success("支付成功, 请稍后");
+             this.$router.push("/order/paySuccess");
+           }else{
+             this.$message.error(rs.data.msg);
+           }
+         });
+      
+       }, 1000)
         })
-      }
+        .catch(() => {
+          this.$message.error('二维码生成失败，请稍后重试')
+        })
     },
     // 关闭微信弹框
     closePayModal () {
@@ -160,7 +186,38 @@ export default {
 }
 </script>
 <style lang="scss">
+  .addressAreaContent{
+    span{
+      font-weight: 500;
+    }
+    p> span{
+      padding-left: 30px;
+    }
+    >div >span{
+      padding-left: 30px;
+    }
+  }
+  .addressArea{
+    font-family: simsun;
+    font-weight: 900;
+    color: #666666;
+    width: 80%;
+    margin-bottom: 25px;
+    .addressAreaTitle{
+      font-size: 15px;
+    }
+  }
+  .orderArea{
+    font-family: simsun;
+    font-weight: 900;
+    color: #666666;
+    width: 80%;
+    .orderAreaHeader{
+      font-size: 15px;
+    }
+  }
   .order-pay{
+    box-sizing: border-box;
     .wrapper{
       background-color:#F5F5F5;
       padding-top:30px;
@@ -231,6 +288,7 @@ export default {
               width:100px;
             }
             .detail-info{
+              font-weight: 500;
               display:inline-block;
               img{
                 width: 30px;

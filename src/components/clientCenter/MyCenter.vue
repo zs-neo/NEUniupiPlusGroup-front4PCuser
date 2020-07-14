@@ -72,7 +72,9 @@
   .myCenter{
     width: 100%;
     height: 95%;
-    background-color: #00B43C;
+    background-color: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
     display: block;
   }
   .box-head{
@@ -80,7 +82,7 @@
 
   }
   .infoFrame{
-    background-color: red;
+    background-color: #e2231a;
     /* padding: 10px; */
     height: 180px;
     width: 300px;

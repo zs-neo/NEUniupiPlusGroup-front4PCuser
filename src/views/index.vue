@@ -1,68 +1,22 @@
 <template>
   <div class="index">
     <div class="swiperbox">
-      <div class="search bar">
-          <form>
-              <input placeholder="css搜索框代码测试" name="cname" type="text">
-              <button type="submit"></button>
-          </form>
-      </div>
-      
-        <div class="swiper-box">
-          <swiper :options="swiperOption">
-            <swiper-slide v-for="(item,index) in slideList" :key="index">
-              <a :href="'/#/product/'+item.id"><img :src="item.img"></a>
-            </swiper-slide>
-            <!-- Optional controls -->
-            <div class="swiper-pagination"  slot="pagination"></div>
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
-          </swiper>
+      <div class="swipeArea">
+        <div class="item" :class="this.swipeClassPrefix+this.swipeClass[0]">
+          <img :src="this.slideList[0].img" @click="showCurrImg(0)"/>
         </div>
+        <div class="item" :class="this.swipeClassPrefix+this.swipeClass[1]">
+          <img :src="this.slideList[1].img" @click="showCurrImg(1)"  />
+        </div>
+        <div class="item" :class="this.swipeClassPrefix+this.swipeClass[2]">
+          <img :src="this.slideList[2].img" @click="showCurrImg(2)" />
+        </div>
+      </div>
     </div>
     <div class="container">
-
-		
-
       <FoodDisplay></FoodDisplay>
-
-
-
-
-<!--     <div class="banner">
-        <a href="/#/product/30">
-          <img v-lazy="'/imgs/banner-1.png'">
-        </a>
-      </div> -->
     </div>
-
-
     <ServiceBar></ServiceBar>
-
-    <Modal
-      title="提示"
-      sureText="查看购物车"
-      cancelText="取消"
-      btnType="3"
-      modalType="middle"
-      :showModal="showModal"
-      @submit="goToCart"
-      @cancel="showModal=false">
-      <template v-slot:body>
-        <p>商品添加成功！</p>
-      </template>
-    </Modal>
-
-    <div class="children" v-if="display" @mouseover="remain" @mouseleave="leave">
-     <ul v-for="(item,i) in foodData" :key="i">
-         <li v-for="(sub,j) in item" :key="j">
-           <a @click="intoFood(sub.id)">
-             <img :src="`${imgPath}${sub.img}`">
-               {{sub.name}}
-           </a>
-         </li>
-       </ul>
-     </div>
   </div>
 
 </template>
@@ -113,67 +67,41 @@ export default {
         },
         {
           id: '46',
-          img: '/imgs/slider/slide-3.jpg',
+          img: '/imgs/slider/ads-discount.jpg',
         }
       ],
-
-      adsList: [
-        {
-          id: 33,
-          img: '/imgs/ads/ads-1.png'
-        }, {
-          id: 48,
-          img: '/imgs/ads/ads-2.jpg'
-        }, {
-          id: 45,
-          img: '/imgs/ads/ads-3.png'
-        }, {
-          id: 47,
-          img: '/imgs/ads/ads-4.jpg'
-        }
+      swipeClass:[
+        '0',
+        '1',
+        '2',
       ],
-      phoneList: [
-      ],
+      swipeClassPrefix: 'p',
       showModal: false
     }
   },
   created() {
     this.axios.get("http://localhost:8082/cart/getCartTypeNum").then(r=>{
-      this.$store.dispatch("saveCartCount",r.data);
+      if(r.data.status){
+        this.$store.dispatch("saveCartCount",r.data);
+      }
     })
   },
+  mounted() {
+    this.swiperMove();
+  },
   methods: {
+    showCurrImg(index){
+      let swipeClassObj = JSON.stringify(this.swipeClass);
+      let swipeClassList = JSON.parse(swipeClassObj);
+      if(index===0){
+        this.swipeClass = ['1', '2', '0'];
+      }else if(index===1){
+        this.swipeClass = ['0', '1', '2'];
+      }else{
+        this.swipeClass = ['2', '0', '1'];
+      }
+    },
 
-    dos(){
-      this.axios.get('/user/hi', {
-        params: {
-        }
-      }).then((res) => {
-        console.log(res)
-        }
-        )
-    },
-    init () {
-      // 查询14条数据，phoneList只用后面8条数据
-      this.axios.get('/products', {
-        params: {
-          categoryId: 100012,
-          pageSize: 14
-        }
-      }).then((res) => {
-        res.list = res.list.slice(6, 14)
-        this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)]
-      })
-    },
-    addCart (id) {
-      this.axios.post('/carts', {
-        productId: id,
-        selected: true
-      }).then((res) => {
-        this.showModal = true
-        this.$store.dispatch('saveCartCount', res.cartTotalQuantity)
-      })
-    },
     goToCart () {
       this.$router.push('/cart')
     },
@@ -183,20 +111,81 @@ export default {
     remain(){
       this.display=true;
     },
-    intoFood(fid){
-      this.$router.push({path: "/detail", query: {fid: fid}})
-      console.log(fid);
+    swiperMove(){
+      var result = setInterval(rs=>{
+        let swipeClassObj = JSON.stringify(this.swipeClass);
+        let swipeClassList = JSON.parse(swipeClassObj);
+        // console.log(swipeClassList);
+        let temp = swipeClassList[0];
+        for(let i = 0;i<swipeClassList.length-1;i++){
+          swipeClassList[i] = swipeClassList[(i+1)%(swipeClassList.length)];
+        }
+        swipeClassList[swipeClassList.length-1] = temp;
+        this.swipeClass = swipeClassList;
+      }, 3000);
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  .swipeArea{
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    padding: 50px 0px;
+  }
+
+  .swipeArea .item{
+    width: fit-content;
+    height: 90%;
+    position: absolute;
+    transition: all 0.3s ease;
+  }
+  .swipeArea .item img{
+      cursor: pointer;
+      width: 1100px;
+      height: 90%;
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: 20px;
+      transition: all ease-in-out 1s;
+      overflow: hidden;
+    }
+
+  .p1{
+    transform: translate3d(20%, 0, 0) scale(1);
+    opacity: 1;
+    z-index: 3;
+    width: 1000px;
+  }
+  .p2{
+    transform: translate3d(48%, 0, 0) scale(0.75);
+    // opacity: 0.9;
+    z-index: 2;
+  }
+  .p0{
+    transform: translate3d(-10%, 0, 0) scale(0.75);
+    // opacity: 0.1;
+    z-index: 1;
+  }
   .nav-menu::-webkit-scrollbar{
     display: none;
   }
   @import './../assets/scss/config.scss';
   @import './../assets/scss/mixin.scss';
+  *{
+    font-family: simsun;
+  }
+  .container{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 40px;
+  }
   .index{
+    width: 100%;
+    height: 100%;
     .swiper-box{
       .nav-menu{
         overflow: auto;
@@ -244,7 +233,6 @@ export default {
         }
       }
       .swiper-container {
-        margin: 0 10px;
         height: 451px;
         .swiper-button-prev{
           left:5px;
@@ -252,104 +240,7 @@ export default {
         img{
           width:100%;
           height:100%;
-        }
-      }
-    }
-    .ads-box{
-      @include flex();
-      margin-top:14px;
-      margin-bottom:31px;
-      a{
-        width:296px;
-        height:167px;
-        // img{  base.scss写过了
-        //   width:100%;
-        //   height:100%;
-        // }
-      }
-    }
-    .banner{
-      margin-bottom:50px;
-    }
-    .product-box{
-      background-color:$colorJ;
-      padding:30px 0 50px;
-      h2{
-        font-size:$fontF;
-        height:21px;
-        line-height:21px;
-        color:$colorB;
-        margin-bottom:20px;
-      }
-      .wrapper{
-        display:flex;
-        .banner-left{
-          margin-right:16px;
-          img{
-            width:224px;
-            height:619px;
-          }
-        }
-        .list-box{
-          .list{
-            @include flex();
-            width:986px;
-            margin-bottom:14px;
-            &:last-child{
-              margin-bottom:0;
-            }
-            .item{
-              width:236px;
-              height:302px;
-              background-color:$colorG;
-              text-align:center;
-              span{
-                display:inline-block;
-                width:67px;
-                height:24px;
-                font-size:14px;
-                line-height:24px;
-                color:$colorG;
-                &.new-pro{
-                  background-color:#7ECF68;
-                }
-                &.kill-pro{
-                  background-color:#E82626;
-                }
-              }
-              .item-img{
-                img{
-                  width:100%;
-                  height:195px;
-                }
-              }
-              .item-info{
-                h3{
-                  font-size:14px;
-                  color:$colorB;
-                  line-height:14px;
-                  font-weight:bold;
-                }
-                p{
-                  color:$colorD;
-                  line-height:13px;
-                  margin:6px auto 13px;
-                }
-                .price{
-                  color:#F20A0A;
-                  font-size:$fontJ;
-                  font-weight:bold;
-                  cursor:pointer;
-                  &:after{
-                    @include bgImg(22px,22px,'/imgs/icon-cart-hover.png');
-                    content:' ';
-                    margin-left:5px;
-                    vertical-align: middle;
-                  }
-                }
-              }
-            }
-          }
+          border-radius: 10px;
         }
       }
     }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from './mutations'
+import mutations from './mutations.js'
 import actions from './actions'
 Vue.use(Vuex)
 
@@ -13,7 +13,15 @@ const state = {
 
 
 export default new Vuex.Store({
+  mutations:{
+    SET_SIGN_UP_STEP (state, step){
+      state.signUpStep = step;
+    },
+    saveCartCount (state, count) {
+      state.cartCount = count
+    }
+  },
   state,
-  mutations,
+  // mutations,
   actions
 })

@@ -101,7 +101,7 @@
               this.$Message.success('注册成功');
               this.addSignUpUser(userinfo);
               console.log(userinfo)
-              father.SET_SIGN_UP_SETP(2);
+              this.$store.commit('SET_SIGN_UP_STEP', 2);
               this.$router.push({
                 path: '/SignUp/signUpDone'
               });

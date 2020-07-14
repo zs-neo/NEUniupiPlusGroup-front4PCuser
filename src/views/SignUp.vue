@@ -34,22 +34,23 @@
   } from 'vuex';
 
   export default {
-    name: 'SignUp',
+    // name: 'SignUp',
     data() {
       return {
         index: 0
       };
     },
     computed: {
-      ...mapState(['signUpStep'])
+      ...mapState(['signUpStep']),
+      
     },
     methods: {
-      ...mapMutations(['SET_SIGN_UP_SETP'])
+		...mapMutations(['SET_SIGN_UP_STEP']),
     },
     store,
     mounted() {
-      // this.SET_SIGN_UP_SETP(0);
-      this.$store.dispatch('SET_SIGN_UP_SETP',0)
+      console.log(this.signUpStep);
+      this.$store.commit('SET_SIGN_UP_STEP', 0);
     }
   };
 </script>

@@ -22,6 +22,7 @@ import MemberCenter from '../components/clientCenter/MemberCenter.vue'
 import AccountSetting from '../components/clientCenter/AccountSetting.vue'
 import UpdateIcon from '../components/clientCenter/UpdateIcon.vue'
 import FoodDetail from '../views/foodDetail.vue'
+import Notice from '../views/advice.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -36,6 +37,22 @@ Vue.use(VueRouter)
           path: '/index',
           name: 'index',
           component: () => import('./../views/index.vue')
+        },
+        {//新增订单支付成功页面
+          path: '/order/paysuccess',
+          name: 'paysuccess',
+          component: () => import('./../views/orderPaySuccess.vue')
+        },
+        {
+          // 示例：http://192.168.0.107:8080/index
+          path: '/notice',
+          name: 'notice',
+          component: Notice,
+        },
+        {
+          path: '/order/pay',
+          name: 'order-pay',
+          component: () => import('./../views/orderPay.vue')
         },
         {
           // 动态路由(即url中可加参数并获取)：
@@ -61,6 +78,7 @@ Vue.use(VueRouter)
           name: 'Confirm',
           component: () => import('./../views/orderConfirm.vue')
         },
+
         {
           path: '/clientCenter',
           name: 'ClientCenter',
@@ -131,14 +149,15 @@ Vue.use(VueRouter)
           path: '/orderDetails',
           name: 'OrderDetails',
           component: OrderDetails,
-        }
+        },
+        {
+          path:'/detail',
+          name:'FoodDetail',
+          component:FoodDetail,
+        },
       ]
     },
-    {
-      path:'/detail',
-      name:'FoodDetail',
-      component:FoodDetail,
-    },
+
     {
       path: '/login',
       name: 'login',
@@ -150,7 +169,6 @@ Vue.use(VueRouter)
       name: 'ScanCode',
       component: () => import('./../components/ScanPayCode.vue')
     },
-
     {
       path: '/order',
       name: 'order',
@@ -166,23 +184,21 @@ Vue.use(VueRouter)
           name: 'order-confirm',
           component: () => import('./../views/orderConfirm.vue')
         },
-        {
-          path: '/order/pay',
-          name: 'order-pay',
-          component: () => import('./../views/orderPay.vue')
-        },
+
         {
           path: '/order/alipay',
           name: 'alipay',
           component: () => import('./../views/alipay.vue')
-        }
+        },
+
       ]
     },
+
 	{
 	  path: '/freeback',
 	  component: freeback
 	},
-,{
+ {
 	  path: '/signup',
 	  component: signup,
 	  children: [
@@ -224,6 +240,6 @@ export default router
 
 
 router.beforeEach((to,from,next)=>{
-	document.title = "秘制小厨";
+	document.title = "五凤楼";
 	next();
 })

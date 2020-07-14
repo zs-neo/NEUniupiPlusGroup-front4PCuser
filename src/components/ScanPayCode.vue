@@ -5,7 +5,7 @@
       <div class="img-scan"></div>
       <div class="img-pay">
         <div class="title">微信支付<em @click="close"></em></div>
-        <div class="qrcode"><img :src="img"></div>
+        <div class="qrcode"><img src="/imgs/scan-pay-code.jpg"></div>
         <div class="tip">
           <p>请使用<span class="theme-color">微信</span>扫一扫</p>
           <p>二维码完成支付</p>

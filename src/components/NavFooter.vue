@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
       <div class="footer-logo">
-        <img src="/imgs/logo.jpg" alt="">
+        <img src="/imgs/logo-round.jpg" alt="">
         <p>五凤楼</p>
       </div>
       <div class="footer-link">
@@ -9,7 +9,7 @@
         <a target="_blank">中软实训M组</a><span></span>
       </div>
       <div class="copyright">
-        Copyright ©2020 <span class="domain">NEU_M</span> All Rights Reserved.
+        Copyright ©2020 <span class="domain">NEUMG</span> All Rights Reserved.
       </div>
     </div>
 </template>
@@ -28,14 +28,14 @@ export default {
     background-color:$colorB;
     color:$colorD;
     font-size:16px;
+    box-sizing: border-box;
     text-align:center;
+    padding: 20px 0px;
     .footer-logo{
-      margin-top:46px;
-      margin-bottom:31px;
       img{
-        width:50;
-        height:50px;
-        margin-bottom:13px;
+        width:100px;
+        height:inherit;
+        border-radius: 50%;
       }
     }
     .footer-link{
